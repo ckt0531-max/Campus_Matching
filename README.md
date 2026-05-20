@@ -11,7 +11,7 @@
 - **수업 별 조원 관리 기능**
 
 ## 기술 스택
-- **Frontend**: React + Vite (TypeScript)
+- **Frontend**: React + Vite
 - **Backend**: Node.js + Express
 - **DB**: MySQL
 
