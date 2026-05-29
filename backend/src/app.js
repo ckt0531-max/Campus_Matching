@@ -10,6 +10,7 @@ dotenv.config();
 
 import db from "./models/index.js"; 
 import authRouter from "./routes/auth_routes.js"; 
+import postRouter from "./routes/post_routes.js";
 
 const { sequelize } = db;
 
@@ -37,6 +38,7 @@ app.use(session({
 }));
 
 app.use("/auth", authRouter);
+app.use("/posts", postRouter);
 
 app.use((req, res, next) => {
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);

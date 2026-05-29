@@ -2,6 +2,7 @@ import Sequelize from "sequelize";
 import { createRequire } from "module";
 
 import User from "./user_db.js"; 
+import Post from "./post_db.js"; 
 
 const require = createRequire(import.meta.url);
 const configAll = require("../../config/config.json");
@@ -22,6 +23,9 @@ db.Sequelize = Sequelize;
 
 db.User = User;
 User.initiate(sequelize);
+
+db.Post = Post;
+Post.initiate(sequelize);
 
 Object.keys(db).forEach(modelName => {
     if (db[modelName].associate) {
