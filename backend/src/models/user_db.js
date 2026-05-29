@@ -3,44 +3,65 @@ import Sequelize from "sequelize";
 class User extends Sequelize.Model {
     static initiate(sequelize) {
         User.init({
-            id: {
-                type: Sequelize.STRING(40),
+            studentId: {
+                type: Sequelize.STRING(20),
+                primaryKey: true,
                 allowNull: false,
                 unique: true,
-                primaryKey: true,
             },
-            nick: {
-                type: Sequelize.STRING(15),
+
+            name: {
+                type: Sequelize.STRING(30),
                 allowNull: false,
             },
+
+            department: {
+                type: Sequelize.STRING(50),
+                allowNull: false,
+            },
+
             password: {
                 type: Sequelize.STRING(100),
                 allowNull: false,
             },
-            provider: {
-                type: Sequelize.ENUM('local'),
-                allowNull: false,
-                defaultValue: 'local',
-            },
+
             preferredRole: {
-                type: Sequelize.ENUM('presentation', 'ppt', 'research', 'leader', 'all-rounder'),
+                type: Sequelize.ENUM(
+                    'presentation',
+                    'ppt',
+                    'research',
+                    'leader',
+                    'all-rounder',
+                    'frontend',
+                    'backend',
+                    'design'
+                ),
                 allowNull: false,
                 defaultValue: 'all-rounder',
             },
+
+            skills: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+            },
+
+            introduction: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+            }
+
         }, {
             sequelize,
             timestamps: true,
-            underscored: false,
+            paranoid: true,
             modelName: 'User',
             tableName: 'users',
-            paranoid: true,
             charset: 'utf8mb4',
             collate: 'utf8mb4_general_ci',
         });
     }
 
-    static associate(db) {
-    }
+    static associate(db) {}
 }
 
 export default User;
