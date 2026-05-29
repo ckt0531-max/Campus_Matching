@@ -1,8 +1,13 @@
 import Sequelize from "sequelize";
 import { createRequire } from "module";
 
+<<<<<<< HEAD
 import User from "./user_db.js";
 import Notification from "./notification_db.js";
+=======
+import User from "./user_db.js"; 
+import Post from "./post_db.js"; 
+>>>>>>> 8014a63d55cdaaafe478e696fd4cb4f6a21f9349
 
 const require = createRequire(import.meta.url);
 
@@ -31,7 +36,12 @@ db.Notification = Notification;
 
 User.initiate(sequelize);
 
+<<<<<<< HEAD
 Notification.initiate(sequelize);
+=======
+db.Post = Post;
+Post.initiate(sequelize);
+>>>>>>> 8014a63d55cdaaafe478e696fd4cb4f6a21f9349
 
 Object.keys(db).forEach(modelName => {
 

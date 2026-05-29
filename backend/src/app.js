@@ -7,7 +7,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+<<<<<<< HEAD
 import db from "./models/index.js";
+=======
+import db from "./models/index.js"; 
+import authRouter from "./routes/auth_routes.js"; 
+import postRouter from "./routes/post_routes.js";
+
+>>>>>>> 8014a63d55cdaaafe478e696fd4cb4f6a21f9349
 const { sequelize } = db;
 
 import matchingRouter from "./routes/matching.js";
@@ -60,6 +67,9 @@ app.use("/api", matchingRouter);
 // ======================
 // 404 처리
 // ======================
+
+app.use("/auth", authRouter);
+app.use("/posts", postRouter);
 
 app.use((req, res, next) => {
     const error = new Error(
