@@ -36,13 +36,11 @@ class Post extends Sequelize.Model {
     }
 
     static associate(db) {
-        // Post는 오직 User에게만 속합니다.
-        db.Post.belongsTo(db.User, { 
-            foreignKey: 'userId',
-            targetKey: 'id',
-            onDelete: 'CASCADE',
-        });
-    }
+    Post.belongsTo(db.User, {
+        foreignKey: "userId",
+        targetKey: "studentId",
+    });
+}
 }
 
 export default Post;

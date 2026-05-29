@@ -7,25 +7,16 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-<<<<<<< HEAD
 import db from "./models/index.js";
-=======
-import db from "./models/index.js"; 
-import authRouter from "./routes/auth_routes.js"; 
-import postRouter from "./routes/post_routes.js";
-
->>>>>>> 8014a63d55cdaaafe478e696fd4cb4f6a21f9349
 const { sequelize } = db;
 
 import matchingRouter from "./routes/matching.js";
+import authRouter from "./routes/auth_routes.js";
+import postRouter from "./routes/post_routes.js";
 
 const app = express();
 
 app.set("port", process.env.PORT || 3001);
-
-// ======================
-// 미들웨어
-// ======================
 
 app.use(morgan("dev"));
 
@@ -37,13 +28,7 @@ app.use(
 );
 
 app.use(express.json());
-
-app.use(
-    express.urlencoded({
-        extended: false,
-    })
-);
-
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET || "campus_secret"));
 
 app.use(
@@ -58,32 +43,15 @@ app.use(
     })
 );
 
-// ======================
-// API 라우터
-// ======================
-
 app.use("/api", matchingRouter);
-
-// ======================
-// 404 처리
-// ======================
-
-app.use("/auth", authRouter);
-app.use("/posts", postRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/posts", postRouter);
 
 app.use((req, res, next) => {
-    const error = new Error(
-        `${req.method} ${req.url} 라우터가 없습니다.`
-    );
-
+    const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
     error.status = 404;
-
     next(error);
 });
-
-// ======================
-// 에러 처리
-// ======================
 
 app.use((err, req, res, next) => {
     console.error(err);
@@ -91,27 +59,17 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
         success: false,
         message: err.message,
-        error:
-            process.env.NODE_ENV !== "production"
-                ? err
-                : {},
+        error: process.env.NODE_ENV !== "production" ? err : {},
     });
 });
-
-// ======================
-// 서버 시작
-// ======================
 
 async function startServer() {
     try {
         await sequelize.sync({ force: false });
-
         console.log("데이터베이스 연결 성공");
 
         app.listen(app.get("port"), () => {
-            console.log(
-                `${app.get("port")} 번 포트 서버 실행 중 🚀`
-            );
+            console.log(`${app.get("port")} 번 포트 서버 실행 중 🚀`);
         });
     } catch (err) {
         console.error("서버 실행 실패");
