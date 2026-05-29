@@ -1,20 +1,15 @@
 import Sequelize from "sequelize";
 import { createRequire } from "module";
 
-<<<<<<< HEAD
 import User from "./user_db.js";
 import Notification from "./notification_db.js";
-=======
-import User from "./user_db.js"; 
-import Post from "./post_db.js"; 
->>>>>>> 8014a63d55cdaaafe478e696fd4cb4f6a21f9349
+import Post from "./post_db.js";
 
 const require = createRequire(import.meta.url);
 
 const configAll = require("../../config/config.json");
 
-const env = process.env.NODE_ENV || 'development';
-
+const env = process.env.NODE_ENV || "development";
 const config = configAll[env];
 
 const db = {};
@@ -27,30 +22,23 @@ const sequelize = new Sequelize(
 );
 
 db.sequelize = sequelize;
-
 db.Sequelize = Sequelize;
 
+// 모델 등록
 db.User = User;
-
 db.Notification = Notification;
-
-User.initiate(sequelize);
-
-<<<<<<< HEAD
-Notification.initiate(sequelize);
-=======
 db.Post = Post;
+
+// 모델 초기화
+User.initiate(sequelize);
+Notification.initiate(sequelize);
 Post.initiate(sequelize);
->>>>>>> 8014a63d55cdaaafe478e696fd4cb4f6a21f9349
 
-Object.keys(db).forEach(modelName => {
-
+// 관계 설정
+Object.keys(db).forEach((modelName) => {
     if (db[modelName].associate) {
-
         db[modelName].associate(db);
-
     }
-
 });
 
 export default db;
