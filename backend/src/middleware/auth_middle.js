@@ -14,7 +14,7 @@ export const authMiddleware = async (req, res, next) => {
       });
     }
 
-    const secretKey = process.env.JWT_SECRET || process.env.COOKIE_SECRET;
+    const secretKey = process.env.JWT_SECRET || process.env.COOKIE_SECRET || "campus_secret";
     const decoded = jwt.verify(token, secretKey);
 
     const user = await User.findByPk(decoded.sub);

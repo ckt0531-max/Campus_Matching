@@ -1,0 +1,141 @@
+body {
+  margin: 0;
+  background-color: #f2f4f8;
+  font-family: Arial, sans-serif;
+}
+
+.App {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h2 {
+  margin: 0;
+}
+
+.alarmButton {
+  padding: 10px 16px;
+  background-color: #222;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.menuBox {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.menuButton {
+  padding: 15px;
+  background-color: white;
+  border: 1px solid #ddd;
+  text-align: center;
+  text-decoration: none;
+  color: #222;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.postList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.postCard {
+  background-color: white;
+  padding: 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #222;
+  border: 1px solid #ddd;
+}
+
+.postCard h4 {
+  margin: 0 0 8px 0;
+}
+
+.postCard p {
+  margin: 0;
+  color: #555;
+}
+
+.formBox {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+input,
+select,
+textarea {
+  padding: 13px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+textarea {
+  height: 120px;
+  resize: none;
+}
+
+button {
+  padding: 13px;
+  background-color: #222;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #444;
+}
+
+.backButton {
+  display: inline-block;
+  margin-top: 20px;
+  color: #222;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.detailBox {
+  background-color: white;
+  padding: 22px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+.noticeBox {
+  background-color: white;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+.noticeBox h3 {
+  margin-top: 0;
+}

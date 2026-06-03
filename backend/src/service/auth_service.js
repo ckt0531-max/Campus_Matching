@@ -8,7 +8,7 @@ export const serializeUser = (user) => ({
 });
 
 export const signAccessToken = (user) => {
-  const secretKey = process.env.JWT_SECRET || process.env.COOKIE_SECRET;
+  const secretKey = process.env.JWT_SECRET || process.env.COOKIE_SECRET || "campus_secret";
 
   return jwt.sign(
     {
