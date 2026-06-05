@@ -7,7 +7,7 @@ function UserInfo() {
 
       <div className="formBox">
         <input type="text" placeholder="이름" />
-        <input type="text" placeholder="나이" />
+        <input type="text" inputmode="numeric" pattern="[0-8]*" placeholder="학번" />
         <input type="text" placeholder="학과" />
 
         <select>
