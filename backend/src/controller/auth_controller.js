@@ -147,7 +147,7 @@ export const updateProfile = async (req, res) => {
 
     const { name, department, preferredRole, skills, introduction } = req.body;
 
-    const user = await User.findByPk(req.user.studentId);
+    const user = await User.findOne({ where: { studentId: req.user.studentId } });
     if (!user) {
       return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
     }

@@ -13,12 +13,12 @@ class Notification extends Sequelize.Model {
             },
 
             senderId: {
-                type: Sequelize.STRING(20),
+                type: Sequelize.STRING(40),
                 allowNull: false,
             },
 
             receiverId: {
-                type: Sequelize.STRING(20),
+                type: Sequelize.STRING(40),
                 allowNull: false,
             },
 

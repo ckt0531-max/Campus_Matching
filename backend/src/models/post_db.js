@@ -29,11 +29,11 @@ class Post extends Sequelize.Model {
                 allowNull: true,
             },
             userId: {
-                type: Sequelize.STRING(20),
-                allowNull: true,
+                type: Sequelize.STRING(40),
+                allowNull: false,
                 references: {
                     model: 'users',
-                    key: 'studentId',
+                    key: 'id',
                 }
             },
             isClosed: {
@@ -61,11 +61,13 @@ class Post extends Sequelize.Model {
     }
 
     static associate(db) {
-    Post.belongsTo(db.User, {
-        foreignKey: "userId",
-        targetKey: "studentId",
-    });
+        Post.belongsTo(db.User, {
+            foreignKey: "userId",
+            targetKey: "id",
+            onDelete: "CASCADE",
+        });
+    }
 }
-}
+
 
 export default Post;

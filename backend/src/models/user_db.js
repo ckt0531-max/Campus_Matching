@@ -3,9 +3,14 @@ import Sequelize from "sequelize";
 class User extends Sequelize.Model {
     static initiate(sequelize) {
         User.init({
+            id: {
+                type: Sequelize.UUID,
+                defaultValue: Sequelize.UUIDV4,
+                primaryKey: true,
+                allowNull: false,
+            },
             studentId: {
                 type: Sequelize.STRING(20),
-                primaryKey: true,
                 allowNull: false,
                 unique: true,
             },
@@ -62,7 +67,7 @@ class User extends Sequelize.Model {
     }
 
     static associate(db) {
-        db.User.hasMany(db.Post, { foreignKey: "userId", sourceKey: "studentId" });
+        User.hasMany(db.Post, { foreignKey: "userId", sourceKey: "id" });
     }
 }
 

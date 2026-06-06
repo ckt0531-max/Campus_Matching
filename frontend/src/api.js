@@ -1,4 +1,6 @@
-const API_BASE = '/api';
+const API_BASE = import.meta.env.DEV
+  ? 'http://localhost:3001/api'
+  : '/api';
 
 const getHeaders = () => {
   const token = localStorage.getItem('token');

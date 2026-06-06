@@ -1,4 +1,5 @@
 import express from 'express';
+import Sequelize from 'sequelize';
 
 const router = express.Router();
 
@@ -28,19 +29,23 @@ router.post('/notifications/apply', async (req, res) => {
                 success: false,
                 message: '알림 정보 누락'
             });
-
         }
 
-        // 받는 사람 존재 여부 확인
-        const receiver = await User.findByPk(receiverId);
+        // 받는 사람 존재 여부 확인 (studentId 또는 UUID id 모두 허용)
+        const receiver = await User.findOne({
+            where: {
+                [Sequelize.Op.or]: [
+                    { studentId: receiverId },
+                    { id: receiverId }
+                ]
+            }
+        });
 
         if (!receiver) {
-
             return res.status(404).json({
                 success: false,
                 message: '받는 사용자가 존재하지 않습니다.'
             });
-
         }
 
         // 중복 신청 체크

@@ -22,13 +22,14 @@ const maskName = (name = "") => {
 
 const isPostOwner = (post, req) => {
   if (!req.user) return false;
-  return String(post.userId) === String(req.user.studentId);
+  return String(post.userId) === String(req.user.id);
 };
 
 const serializePost = async (postInstance) => {
   const commentsCount = 0;
 
   const authorName = postInstance.User?.name || "익명";
+  const authorStudentId = postInstance.User?.studentId || null;
 
   return {
     id: postInstance.id,
@@ -38,7 +39,7 @@ const serializePost = async (postInstance) => {
     people: postInstance.people || "인원 미정",
     place: postInstance.place || "장소 미정",
     author: maskName(authorName),
-    authorId: postInstance.userId,
+    authorId: authorStudentId || postInstance.userId,
     date: formatDate(postInstance.createdAt),
     comments: commentsCount,
     isClosed: !!postInstance.isClosed,
@@ -71,11 +72,11 @@ export const createPost = async (req, res, next) => {
       category,
       people,
       place,
-      userId: req.user.studentId,
+      userId: req.user.id,
     });
 
     const populatedPost = await Post.findByPk(post.id, {
-      include: [{ model: User, attributes: ["name"] }],
+      include: [{ model: User, attributes: ["name", "studentId"] }],
     });
 
     return res.status(201).json(await serializePost(populatedPost));
@@ -101,7 +102,7 @@ export const getPosts = async (req, res, next) => {
 
     const posts = await Post.findAll({
       where: whereCondition,
-      include: [{ model: User, attributes: ["name"] }],
+      include: [{ model: User, attributes: ["name", "studentId"] }],
       order: [["createdAt", "DESC"]],
     });
 
@@ -118,7 +119,7 @@ export const getPostDetail = async (req, res, next) => {
     const { id } = req.params;
 
     const post = await Post.findByPk(id, {
-      include: [{ model: User, attributes: ["name"] }],
+      include: [{ model: User, attributes: ["name", "studentId"] }],
     });
 
     if (!post) {
