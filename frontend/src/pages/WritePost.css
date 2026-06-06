@@ -1,0 +1,244 @@
+/* ==========================================
+   1. 글로벌 헤더 영역 (전체 페이지 통일)
+   ========================================== */
+.globalHeaderLinks {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+}
+
+.headerLogoLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.logoEmoji { font-size: 20px; margin: 0; }
+.logoTitle { font-weight: 700; font-size: 15px; color: #20488D; }
+
+.headerLink {
+  text-decoration: none;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  transition: all 0.15s ease;
+}
+.headerLink:hover { background-color: #e2e8f0; color: #20488D; }
+
+.writeHeaderButton {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+}
+.writeHeaderButton:hover { background-color: #e2e8f0; color: #20488D; }
+
+/* 글쓰기 탭 활성화 상태 하이라이트 */
+.writeHeaderButton.activeWriteTab {
+  background-color: #f0f4f8;
+  color: #20488D;
+  border: 1px solid #b9cfe7;
+}
+
+.alarmBellButton {
+  position: relative;
+  text-decoration: none;
+  background: white;
+  border: 1px solid #e2e8f0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unreadBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userNav { display: flex; align-items: center; gap: 10px; }
+
+.userInfoBtn {
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: white;
+  color: #20488D;
+  border: 1px solid #b9cfe7;
+}
+.userInfoBtn:hover { background-color: #f8fafc; }
+
+.logoutBtn {
+  padding: 7px 14px;
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: none;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.headerLinkOutline { background-color: transparent; border: 1px solid #b9cfe7; color: #20488D; }
+.headerLinkFilled { background: #20488D; color: white !important; }
+.headerLinkFilled:hover { background: #16366f; }
+.pointer-cursor { cursor: pointer; }
+
+
+/* ==========================================
+   2. 에디터 폼 레이아웃 (Layout Blocks)
+   ========================================== */
+.editorContainer {
+  width: 90%;
+  max-width: 580px; /* 입력 집중형 와이드 뷰 */
+  margin: 0 auto;
+  padding: 40px 0 80px 0;
+}
+
+.editorMainTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: left;
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
+}
+
+.editorFormCard {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* 필드 정렬을 위한 2분할 그리드 행 */
+.editorFieldGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+
+/* ==========================================
+   3. 폼 컨트롤 요소 커스텀 (Controls)
+   ========================================== */
+.editorFormGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.editorInputLabel {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.editorInputField,
+.editorSelectField,
+.editorTextAreaField {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  font-size: 14.5px;
+  color: #1e293b;
+  background-color: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+/* 인터랙션 시 포커스 고유 컬러 적용 */
+.editorInputField:focus,
+.editorSelectField:focus,
+.editorTextAreaField:focus {
+  border-color: #20488D;
+  box-shadow: 0 0 0 3px rgba(32, 72, 141, 0.12);
+}
+
+.editorInputField::placeholder,
+.editorTextAreaField::placeholder {
+  color: #94a3b8;
+  font-size: 13.5px;
+}
+
+/* 본문 입력 전용 텍스트 에어리어 높이 확보 및 최소 확장 제한 */
+.editorTextAreaField {
+  height: 200px;
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+
+/* ==========================================
+   4. 피드백 배너 및 서브미트 버튼 (Actions)
+   ========================================== */
+.editorAlertBox {
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.errorAlert { background-color: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+.successAlert { background-color: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+
+.editorSubmitBtn {
+  width: 100%;
+  padding: 14px;
+  font-size: 15.5px;
+  font-weight: 600;
+  color: white;
+  background-color: #20488D;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.15s ease;
+}
+
+.editorSubmitBtn:hover { background-color: #16366f; }
+.editorSubmitBtn:active { background-color: #0f2752; }
+
+/* 제출 진행 시 디스에이블드 처리 스타일 규칙 */
+.editorSubmitBtn:disabled {
+  background-color: #94a3b8;
+  color: #f1f5f9;
+  cursor: not-allowed;
+}

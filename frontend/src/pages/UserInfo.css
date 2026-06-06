@@ -1,0 +1,319 @@
+/* ==========================================
+   1. 글로벌 헤더 영역 (일관성 유지)
+   ========================================== */
+.globalHeaderLinks {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+}
+
+.headerLogoLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.logoEmoji { font-size: 20px; margin: 0; }
+.logoTitle { font-weight: 700; font-size: 15px; color: #20488D; }
+
+.headerLink {
+  text-decoration: none;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  transition: all 0.15s ease;
+}
+.headerLink:hover { background-color: #e2e8f0; color: #20488D; }
+
+.writeHeaderButton {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+}
+.writeHeaderButton:hover { background-color: #e2e8f0; color: #20488D; }
+
+.alarmBellButton {
+  position: relative;
+  text-decoration: none;
+  background: white;
+  border: 1px solid #e2e8f0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unreadBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userNav { display: flex; align-items: center; gap: 10px; }
+
+.userInfoBtn {
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: white;
+  color: #20488D;
+  border: 1px solid #b9cfe7;
+}
+
+/* 내 정보 탭 활성화 테두리 강조 */
+.userInfoBtn.activeProfileTab {
+  border-color: #20488D;
+  background-color: #f0f4f8;
+}
+
+.logoutBtn {
+  padding: 7px 14px;
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: none;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.headerLinkOutline { background-color: transparent; border: 1px solid #b9cfe7; color: #20488D; }
+.headerLinkFilled { background: #20488D; color: white !important; }
+.headerLinkFilled:hover { background: #16366f; }
+.pointer-cursor { cursor: pointer; }
+
+
+/* ==========================================
+   2. 레이아웃 구조 (Dashboard Architecture)
+   ========================================== */
+.dashboardContainer {
+  width: 90%;
+  max-width: 640px; /* 안정적인 단일 칼럼 구조 */
+  margin: 0 auto;
+  padding: 40px 0 80px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.dashboardMainTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.sectionSubTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+  margin: 0 0 14px 0;
+}
+
+
+/* ==========================================
+   3. 내 정보 프로필 카드 (Read-Only Card)
+   ========================================== */
+.profileViewCard {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.profileCardHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.profileStatusBadge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #15803d;
+  background-color: #dcfce7;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+.profileDetailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  font-size: 14px;
+  color: #334155;
+}
+
+.gridInfoItem strong {
+  display: inline-block;
+  width: 70px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.roleBadge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #20488D;
+  background-color: #e0e7ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.profileIntroBox {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.introLabel {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.introParagraph {
+  margin: 0;
+  font-size: 14px;
+  color: #1e293b;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.profileFallbackAlert {
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  color: #64748b;
+  text-align: center;
+}
+
+
+/* ==========================================
+   4. 정보 수정 폼 엘리먼트 (Edit Form View)
+   ========================================== */
+.profileEditForm {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profileFormGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profileInputLabel {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* 필드 표준화 공통 */
+.profileInputField,
+.profileSelectField,
+.profileTextAreaField {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: #1e293b;
+  background-color: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.profileInputField:focus,
+.profileSelectField:focus,
+.profileTextAreaField:focus {
+  border-color: #20488D;
+  box-shadow: 0 0 0 3px rgba(32, 72, 141, 0.12);
+}
+
+/* 비활성화 필드 (학번) 전용 스타일 */
+.profileInputField.fieldDisabled {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
+
+/* 자기소개 창 필드 확장 고정 */
+.profileTextAreaField {
+  height: 120px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* 저장 버튼 디자인 */
+.profileSubmitBtn {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background-color: #20488D;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.15s ease;
+}
+.profileSubmitBtn:hover { background-color: #16366f; }
+.profileSubmitBtn:active { background-color: #0f2752; }
+
+
+/* ==========================================
+   5. 메세지 컴포넌트 팝업
+   ========================================== */
+.profileAlert {
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.errorAlert { background-color: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+.successAlert { background-color: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }

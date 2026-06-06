@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
+import "./Notification.css"; // CSS 파일 분리 및 임포트
 
 function Notification() {
   const navigate = useNavigate();
@@ -31,19 +32,17 @@ function Notification() {
         if (res.success && Array.isArray(res.data)) {
           setNotifications(res.data);
 
-          // 읽지 않은 알림 개수 임시 계산
+          // 읽지 않은 알림 개수 계산
           const unread = res.data.filter((n) => !n.isRead);
           setUnreadCount(unread.length);
 
-          // 읽지 않은 알림들의 읽음 처리
+          // 읽지 않은 알림들의 읽음 처리 API 호출
           await Promise.all(
             unread.map((n) => api.patch(`/notifications/${n.id}/read`))
           );
 
-          // 로컬 상태도 읽음 상태로 업데이트하여 UI 갱신
+          // 로컬 상태 업데이트
           setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-
-          // 처리 후 읽지 않은 개수 초기화
           setUnreadCount(0);
         }
       } catch (err) {
@@ -84,45 +83,19 @@ function Notification() {
     <>
       {/* 상단 통합 네비게이션 헤더 */}
       <div className="globalHeaderLinks">
-        <Link to="/" className="headerLogoLink" style={{
-          textDecoration: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          marginRight: 'auto',
-          padding: '8px 16px',
-          borderRadius: '14px',
-          background: 'white',
-          border: '1px solid rgba(226, 232, 240, 0.8)',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
-        }}>
-          <span className="logoEmoji" style={{ fontSize: '22px', margin: 0 }}>🤝</span>
-          <span className="logoTitle" style={{ fontWeight: 800, fontSize: '16px' }}>팀 매칭 서비스</span>
+        <Link to="/" className="headerLogoLink">
+          <span className="logoEmoji">🤝</span>
+          <span className="logoTitle">팀 매칭 서비스</span>
         </Link>
 
         {user ? (
           <>
             <Link to="/all-posts" className="headerLink">전체 게시판</Link>
             <Link to="/write" className="writeHeaderButton">게시글 작성</Link>
-            <Link to="/notification" className="alarmBellButton" style={{ position: "relative" }} title="알림">
+            <Link to="/notification" className="alarmBellButton" title="알림">
               🔔
               {unreadCount > 0 && (
-                <span className="unreadBadge" style={{
-                  position: "absolute",
-                  top: "-4px",
-                  right: "-4px",
-                  backgroundColor: "#ef4444",
-                  color: "white",
-                  fontSize: "10px",
-                  fontWeight: "bold",
-                  borderRadius: "50%",
-                  width: "18px",
-                  height: "18px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 2px 4px rgba(239, 68, 68, 0.4)"
-                }}>{unreadCount}</span>
+                <span className="unreadBadge">{unreadCount}</span>
               )}
             </Link>
             <Link to="/user-info" className="userInfoBtn">{user.name || user.studentId}님</Link>
@@ -131,8 +104,8 @@ function Notification() {
         ) : (
           <div className="userNav">
             <Link to="/all-posts" className="headerLink">전체 게시판</Link>
-            <span onClick={handleRequireLogin} className="writeHeaderButton" style={{ cursor: "pointer" }}>게시글 작성</span>
-            <span onClick={handleRequireLogin} className="alarmBellButton" style={{ cursor: "pointer" }} title="알림">🔔</span>
+            <span onClick={handleRequireLogin} className="writeHeaderButton pointer-cursor">게시글 작성</span>
+            <span onClick={handleRequireLogin} className="alarmBellButton pointer-cursor" title="알림">🔔</span>
             <Link to="/register" className="headerLink headerLinkOutline">회원가입</Link>
             <Link to="/login" className="headerLink headerLinkFilled">로그인</Link>
           </div>
@@ -140,68 +113,71 @@ function Notification() {
       </div>
 
       <div className="container">
-        <h2>알림창</h2>
+        <h2 className="notificationMainTitle">알림창</h2>
 
         {notifications.length > 0 ? (
           <>
+            {/* 새로운 알림 영역 */}
             {unreadNotis.length > 0 && (
-              <div style={{ marginBottom: "30px" }}>
-                <h3 style={{ color: "#ef4444", borderBottom: "2px solid #fee2e2", paddingBottom: "8px" }}>새로운 알림</h3>
-                {unreadNotis.map((noti) => (
-                  <div className="noticeBox" key={noti.id} style={{ borderLeft: "4px solid #ef4444" }}>
-                    <div className="noticeHeader" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                      <h3 style={{ margin: 0, color: "#ef4444" }}>
-                        {noti.type === "apply" ? "신청 완료 알림" : "알림"}
-                      </h3>
-                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                        <span className="noticeTime" style={{ fontSize: "12px", color: "#64748b" }}>
-                          {new Date(noti.createdAt).toLocaleString()}
-                        </span>
-                        <button 
-                          onClick={() => handleDeleteNotification(noti.id)}
-                          style={{ background: "transparent", border: "none", color: "#ef4444", fontSize: "12px", padding: 0, cursor: "pointer", boxShadow: "none" }}
-                        >
-                          삭제
-                        </button>
+              <div className="notificationSection">
+                <h3 className="sectionTitle unreadSectionTitle">새로운 알림</h3>
+                <div className="noticeListGroup">
+                  {unreadNotis.map((noti) => (
+                    <div className="noticeBox unreadNoticeBox" key={noti.id}>
+                      <div className="noticeHeader">
+                        <h4 className="noticeTypeTitle unreadTypeTitle">
+                          {noti.type === "apply" ? "신청 완료 알림" : "알림"}
+                        </h4>
+                        <div className="noticeMetaGroup">
+                          <span className="noticeTime">{new Date(noti.createdAt).toLocaleString()}</span>
+                          <button 
+                            onClick={() => handleDeleteNotification(noti.id)}
+                            className="noticeDeleteBtn unreadDeleteBtn"
+                          >
+                            삭제
+                          </button>
+                        </div>
                       </div>
+                      <p className="noticeMessageText">{noti.message}</p>
                     </div>
-                    <p style={{ margin: 0 }}>{noti.message}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
 
+            {/* 기존 알림 영역 */}
             {readNotis.length > 0 && (
-              <div>
-                <h3 style={{ color: "#64748b", borderBottom: "2px solid #f1f5f9", paddingBottom: "8px" }}>기존 알림</h3>
-                {readNotis.map((noti) => (
-                  <div className="noticeBox" key={noti.id} style={{ backgroundColor: "#f8fafc", opacity: 0.8 }}>
-                    <div className="noticeHeader" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                      <h3 style={{ margin: 0, color: "#64748b" }}>
-                        {noti.type === "apply" ? "신청 완료 알림" : "알림"}
-                      </h3>
-                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                        <span className="noticeTime" style={{ fontSize: "12px", color: "#94a3b8" }}>
-                          {new Date(noti.createdAt).toLocaleString()}
-                        </span>
-                        <button 
-                          onClick={() => handleDeleteNotification(noti.id)}
-                          style={{ background: "transparent", border: "none", color: "#94a3b8", fontSize: "12px", padding: 0, cursor: "pointer", boxShadow: "none" }}
-                        >
-                          삭제
-                        </button>
+              <div className="notificationSection">
+                <h3 className="sectionTitle readSectionTitle">기존 알림</h3>
+                <div className="noticeListGroup">
+                  {readNotis.map((noti) => (
+                    <div className="noticeBox readNoticeBox" key={noti.id}>
+                      <div className="noticeHeader">
+                        <h4 className="noticeTypeTitle readTypeTitle">
+                          {noti.type === "apply" ? "신청 완료 알림" : "알림"}
+                        </h4>
+                        <div className="noticeMetaGroup">
+                          <span className="noticeTime readNoticeTime">{new Date(noti.createdAt).toLocaleString()}</span>
+                          <button 
+                            onClick={() => handleDeleteNotification(noti.id)}
+                            className="noticeDeleteBtn readDeleteBtn"
+                          >
+                            삭제
+                          </button>
+                        </div>
                       </div>
+                      <p className="noticeMessageText readMessageText">{noti.message}</p>
                     </div>
-                    <p style={{ margin: 0, color: "#64748b" }}>{noti.message}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </>
         ) : (
-          <div className="emptyState" style={{ textAlign: "center", padding: "40px 0" }}>
-            <p className="emptyStateIcon" style={{ fontSize: "48px", margin: "0 0 16px 0" }}>🔔</p>
-            <p className="emptyStateText" style={{ color: "#64748b" }}>새로운 알림이 없습니다.</p>
+          /* 알림이 없을 때 */
+          <div className="emptyState notificationEmptyState">
+            <p className="emptyStateIcon">🔔</p>
+            <p className="emptyStateText">새로운 알림이 없습니다.</p>
           </div>
         )}
       </div>

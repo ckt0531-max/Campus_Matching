@@ -1,0 +1,310 @@
+/* ==========================================
+   1. 헤더 영역 (Home.css와 통일성)
+   ========================================== */
+.globalHeaderLinks {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+}
+
+.headerLogoLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.logoEmoji { font-size: 20px; margin: 0; }
+.logoTitle { font-weight: 700; font-size: 15px; color: #20488D; }
+
+.headerLink {
+  text-decoration: none;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  transition: all 0.15s ease;
+}
+
+.headerLink:hover { background-color: #e2e8f0; color: #20488D; }
+.headerLink--active { background-color: #f0f4f8; color: #20488D !important; }
+
+.writeHeaderButton {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+}
+.writeHeaderButton:hover { background-color: #e2e8f0; color: #20488D; }
+
+.alarmBellButton {
+  position: relative;
+  text-decoration: none;
+  background: white;
+  border: 1px solid #e2e8f0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unreadBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userInfoBtn {
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: white;
+  color: #20488D;
+  border: 1px solid #b9cfe7;
+}
+
+.logoutBtn {
+  padding: 7px 14px;
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: none;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.logoutBtn:hover { background-color: #fca5a5; }
+
+.headerLinkOutline { background-color: transparent; border: 1px solid #b9cfe7; color: #20488D; }
+.headerLinkFilled { background: #20488D; color: white !important; }
+.headerLinkFilled:hover { background: #16366f; }
+.pointer-cursor { cursor: pointer; }
+
+
+/* ==========================================
+   2. 게시판 레이아웃 타이틀 헤더
+   ========================================== */
+.wideContainer {
+  width: 92%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 0 60px 0;
+}
+
+.boardTitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+}
+
+.boardDescription {
+  color: #64748b;
+  margin-bottom: 36px;
+  font-size: 14px;
+}
+
+
+/* ==========================================
+   3. 컨트롤 바 (필터 드롭다운 & 우측 검색창)
+   ========================================== */
+.filterController {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.filterSelectGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.filterSelect {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #cbd5e1;
+  background-color: white;
+  color: #334155;
+  outline: none;
+  cursor: pointer;
+}
+
+.filterSelect:focus {
+  border-color: #20488D;
+}
+
+.searchBarContainer {
+  flex: 1;
+  max-width: 320px;
+}
+
+.searchInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+.searchInputWrapper:focus-within {
+  border-color: #20488D;
+}
+
+.searchIcon {
+  font-size: 14px;
+  padding: 0 6px;
+  color: #94a3b8;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 8px 4px;
+  font-size: 13.5px;
+  outline: none;
+}
+
+
+/* ==========================================
+   4. 게시글 데이터 테이블 (SaaS 스타일 플랫화)
+   ========================================== */
+.tableSection {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  padding: 8px 0; /* 내부 패딩을 패널 가장자리로 조절 */
+  overflow-x: auto;
+}
+
+.postsTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13.5px;
+  table-layout: fixed;
+}
+
+/* 테이블 상단 헤더라인 */
+.postsTable th {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+}
+
+/* 데이터 열 정돈 */
+.postsTable td {
+  padding: 14px 16px;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.postsTable tbody tr {
+  transition: background-color 0.1s ease;
+}
+
+.postsTable tbody tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* 테이블의 열 너비 정의 고정 */
+.col-no { width: 60px; text-align: center; }
+.col-category { width: 130px; }
+.col-author { width: 90px; }
+.col-people { width: 80px; text-align: center; }
+.col-place { width: 120px; }
+.col-date { width: 110px; text-align: center; }
+.col-status { width: 100px; text-align: center; }
+
+.cell-no { text-align: center; color: #94a3b8; }
+.cell-people { text-align: center; }
+.cell-place { color: #64748b; font-size: 13px; }
+.cell-date { text-align: center; color: #64748b; font-size: 13px; }
+.cell-status { text-align: center; }
+
+/* 게시물 링크 */
+.tableTitleLink {
+  font-weight: 600;
+  color: #0f172a;
+  text-decoration: none;
+}
+.tableTitleLink:hover {
+  color: #20488D;
+  text-decoration: underline;
+}
+
+.postCategoryBadge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #20488D;
+  background-color: #f0f4f8;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+
+/* ==========================================
+   5. 모집 상태 플랫 라벨 (Status Badges)
+   ========================================== */
+.statusBadge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.statusMyPost { background-color: #e2e8f0; color: #334155; }
+.statusClosed { background-color: #fee2e2; color: #ef4444; }
+.statusApplied { background-color: #f1f5f9; color: #64748b; }
+.statusAvailable { background-color: #d1fae5; color: #065f46; }
+
+
+/* ==========================================
+   6. 로딩 및 결과 없음 처리
+   ========================================== */
+.loadingText { text-align: center; padding: 40px; color: #64748b; }
+.noDataContainer { text-align: center; padding: 60px 20px; }
+.noDataIcon { font-size: 24px; margin: 0; }
+.noDataText { color: #94a3b8; font-size: 14px; margin-top: 6px; }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
+import "./UserInfo.css"; // CSS 파일 분리 및 임포트
 
 function UserInfo() {
   const [name, setName] = useState("");
@@ -50,7 +51,6 @@ function UserInfo() {
     }
   };
 
-  // 로그인 상태 가드 및 프로필 정보 로드
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -69,7 +69,6 @@ function UserInfo() {
         setRole(roleToFrontend(user.preferredRole));
         setSelfIntro(user.introduction || "");
 
-        // 알림 개수 계산
         const notiRes = await api.get(`/notifications/${user.studentId}`);
         if (notiRes && notiRes.success && Array.isArray(notiRes.data)) {
           const count = notiRes.data.filter((n) => !n.isRead).length;
@@ -106,7 +105,6 @@ function UserInfo() {
       return;
     }
 
-    // 학과 검증: 필수 및 문자 체크 (숫자, 특수문자 불가)
     if (!department.trim()) {
       setErrorMsg("학과를 입력해주세요.");
       return;
@@ -118,7 +116,6 @@ function UserInfo() {
       return;
     }
 
-    // 자기소개 검증: 10글자 이하 시 경고 팝업 출력 (진행은 계속됨)
     if (selfIntro.trim().length <= 10) {
       alert("자기소개가 너무 짧으면 다른 회원들이 회원님 정보 확인이 어려워서 불이익이 있을 수 있습니다.");
     }
@@ -131,7 +128,6 @@ function UserInfo() {
         introduction: selfIntro.trim(),
       });
 
-      // 로컬스토리지 user 객체 업데이트
       const loggedInUser = localStorage.getItem("user");
       if (loggedInUser) {
         const parsed = JSON.parse(loggedInUser);
@@ -159,85 +155,59 @@ function UserInfo() {
     <>
       {/* 상단 통합 네비게이션 헤더 */}
       <div className="globalHeaderLinks">
-        <Link to="/" className="headerLogoLink" style={{
-          textDecoration: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          marginRight: 'auto',
-          padding: '8px 16px',
-          borderRadius: '14px',
-          background: 'white',
-          border: '1px solid rgba(226, 232, 240, 0.8)',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
-        }}>
-          <span className="logoEmoji" style={{ fontSize: '22px', margin: 0 }}>🤝</span>
-          <span className="logoTitle" style={{ fontWeight: 800, fontSize: '16px' }}>팀 매칭 서비스</span>
+        <Link to="/" className="headerLogoLink">
+          <span className="logoEmoji">🤝</span>
+          <span className="logoTitle">팀 매칭 서비스</span>
         </Link>
 
         {currentProfile ? (
           <>
             <Link to="/all-posts" className="headerLink">전체 게시판</Link>
             <Link to="/write" className="writeHeaderButton">게시글 작성</Link>
-            <Link to="/notification" className="alarmBellButton" style={{ position: "relative" }} title="알림">
+            <Link to="/notification" className="alarmBellButton" title="알림">
               🔔
-              {unreadCount > 0 && (
-                <span className="unreadBadge" style={{
-                  position: "absolute",
-                  top: "-4px",
-                  right: "-4px",
-                  backgroundColor: "#ef4444",
-                  color: "white",
-                  fontSize: "10px",
-                  fontWeight: "bold",
-                  borderRadius: "50%",
-                  width: "18px",
-                  height: "18px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 2px 4px rgba(239, 68, 68, 0.4)"
-                }}>{unreadCount}</span>
-              )}
+              {unreadCount > 0 && <span className="unreadBadge">{unreadCount}</span>}
             </Link>
-            <Link to="/user-info" className="userInfoBtn">{currentProfile.name || currentProfile.studentId}님</Link>
+            <Link to="/user-info" className="userInfoBtn activeProfileTab">
+              {currentProfile.name || currentProfile.studentId}님
+            </Link>
             <button onClick={handleLogout} className="logoutBtn">로그아웃</button>
           </>
         ) : (
           <div className="userNav">
             <Link to="/all-posts" className="headerLink">전체 게시판</Link>
-            <span onClick={handleRequireLogin} className="writeHeaderButton" style={{ cursor: "pointer" }}>게시글 작성</span>
-            <span onClick={handleRequireLogin} className="alarmBellButton" style={{ cursor: "pointer" }} title="알림">🔔</span>
+            <span onClick={handleRequireLogin} className="writeHeaderButton pointer-cursor">게시글 작성</span>
+            <span onClick={handleRequireLogin} className="alarmBellButton pointer-cursor" title="알림">🔔</span>
             <Link to="/register" className="headerLink headerLinkOutline">회원가입</Link>
             <Link to="/login" className="headerLink headerLinkFilled">로그인</Link>
           </div>
         )}
       </div>
 
-      <div className="container">
-        <h2>회원 정보 관리</h2>
+      <div className="dashboardContainer">
+        <h2 className="dashboardMainTitle">회원 정보 관리</h2>
 
         {/* 내 정보 확인 카드 영역 */}
         <div className="profileViewSection">
-          <h3>내 정보 확인</h3>
+          <h3 className="sectionSubTitle">내 정보 확인</h3>
           {currentProfile ? (
-            <div className="profileCard">
+            <div className="profileViewCard">
               <div className="profileCardHeader">
-                <span className="profileBadge">등록 완료</span>
+                <span className="profileStatusBadge">ID 인증 완료</span>
               </div>
-              <div className="profileGrid">
-                <p><strong>이름:</strong> {currentProfile.name}</p>
-                <p><strong>학번:</strong> {currentProfile.studentId}</p>
-                <p><strong>학과:</strong> {currentProfile.department}</p>
-                <p><strong>역할:</strong> {roleToFrontend(currentProfile.preferredRole)}</p>
+              <div className="profileDetailGrid">
+                <div className="gridInfoItem"><strong>이름</strong> <span>{currentProfile.name}</span></div>
+                <div className="gridInfoItem"><strong>학번</strong> <span>{currentProfile.studentId}</span></div>
+                <div className="gridInfoItem"><strong>학과</strong> <span>{currentProfile.department}</span></div>
+                <div className="gridInfoItem"><strong>선호 역할</strong> <span className="roleBadge">{roleToFrontend(currentProfile.preferredRole)}</span></div>
               </div>
-              <div className="profileIntro">
-                <strong>자기소개:</strong>
-                <p>{currentProfile.introduction || "등록된 자기소개가 없습니다."}</p>
+              <div className="profileIntroBox">
+                <h4 className="introLabel">자기소개</h4>
+                <p className="introParagraph">{currentProfile.introduction || "등록된 자기소개가 없습니다."}</p>
               </div>
             </div>
           ) : (
-            <div className="infoAlert">
+            <div className="profileFallbackAlert">
               로딩 중이거나 등록된 사용자 정보가 없습니다.
             </div>
           )}
@@ -245,56 +215,71 @@ function UserInfo() {
 
         {/* 정보 등록 및 수정 폼 영역 */}
         <div className="profileEditSection">
-          <h3>정보 수정하기</h3>
-          <form onSubmit={handleSaveInfo} className="formBox">
-            {errorMsg && <div className="errorAlert">{errorMsg}</div>}
-            {successMsg && <div className="successAlert">{successMsg}</div>}
+          <h3 className="sectionSubTitle">정보 수정하기</h3>
+          <form onSubmit={handleSaveInfo} className="profileEditForm">
+            {errorMsg && <div className="profileAlert errorAlert">{errorMsg}</div>}
+            {successMsg && <div className="profileAlert successAlert">{successMsg}</div>}
 
-            <label className="inputLabel">이름</label>
-            <input
-              type="text"
-              placeholder="이름을 입력하세요"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <div className="profileFormGroup">
+              <label className="profileInputLabel">이름</label>
+              <input
+                type="text"
+                placeholder="이름을 입력하세요"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="profileInputField"
+              />
+            </div>
 
-            <label className="inputLabel">학번 (수정 불가)</label>
-            <input
-              type="text"
-              value={studentId}
-              disabled
-              style={{ backgroundColor: "#f1f5f9", cursor: "not-allowed" }}
-            />
+            <div className="profileFormGroup">
+              <label className="profileInputLabel">학번 (수정 불가)</label>
+              <input
+                type="text"
+                value={studentId}
+                disabled
+                className="profileInputField fieldDisabled"
+              />
+            </div>
 
-            <label className="inputLabel">학과</label>
-            <input
-              type="text"
-              placeholder="학과를 입력하세요"
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-            />
+            <div className="profileFormGroup">
+              <label className="profileInputLabel">학과</label>
+              <input
+                type="text"
+                placeholder="학과를 입력하세요"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                className="profileInputField"
+              />
+            </div>
 
-            <label className="inputLabel">역할 선택</label>
-            <select value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="역할 선택">역할 선택</option>
-              <option value="올라운더">올라운더</option>
-              <option value="프론트엔드">프론트엔드</option>
-              <option value="백엔드">백엔드</option>
-              <option value="디자인">디자인</option>
-              <option value="보고서 및 PPT">보고서 및 PPT</option>
-              <option value="발표">발표</option>
-              <option value="코딩">코딩</option>
-              <option value="팀장">팀장</option>
-            </select>
+            <div className="profileFormGroup">
+              <label className="profileInputLabel">역할 선택</label>
+              <div className="selectCustomWrapper">
+                <select value={role} onChange={(e) => setRole(e.target.value)} className="profileSelectField">
+                  <option value="역할 선택">역할 선택</option>
+                  <option value="올라운더">올라운더</option>
+                  <option value="프론트엔드">프론트엔드</option>
+                  <option value="백엔드">백엔드</option>
+                  <option value="디자인">디자인</option>
+                  <option value="보고서 및 PPT">보고서 및 PPT</option>
+                  <option value="발표">발표</option>
+                  <option value="코딩">코딩</option>
+                  <option value="팀장">팀장</option>
+                </select>
+              </div>
+            </div>
 
-            <label className="inputLabel">자기소개</label>
-            <textarea
-              placeholder="자기소개를 입력하세요"
-              value={selfIntro}
-              onChange={(e) => setSelfIntro(e.target.value)}
-            ></textarea>
+            <div className="profileFormGroup">
+              <label className="profileInputLabel">자기소개</label>
+              <textarea
+                placeholder="팀원들에게 보여질 자기소개를 10자 이상 성실하게 입력하세요."
+                value={selfIntro}
+                onChange={(e) => setSelfIntro(e.target.value)}
+                className="profileTextAreaField"
+              ></textarea>
+            </div>
 
-            <button type="submit">저장 완료</button>
+            <button type="submit" className="profileSubmitBtn">저장 완료</button>
           </form>
         </div>
       </div>

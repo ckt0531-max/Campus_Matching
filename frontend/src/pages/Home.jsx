@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
+import "./Home.css"; // CSS 파일 임포트
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -84,25 +85,10 @@ function Home() {
           <>
             <Link to="/all-posts" className="headerLink">전체 게시판</Link>
             <Link to="/write" className="writeHeaderButton">게시글 작성</Link>
-            <Link to="/notification" className="alarmBellButton" style={{ position: "relative" }} title="알림">
+            <Link to="/notification" className="alarmBellButton" title="알림">
               🔔
               {unreadCount > 0 && (
-                <span className="unreadBadge" style={{
-                  position: "absolute",
-                  top: "-4px",
-                  right: "-4px",
-                  backgroundColor: "#ef4444",
-                  color: "white",
-                  fontSize: "10px",
-                  fontWeight: "bold",
-                  borderRadius: "50%",
-                  width: "18px",
-                  height: "18px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 2px 4px rgba(239, 68, 68, 0.4)"
-                }}>{unreadCount}</span>
+                <span className="unreadBadge">{unreadCount}</span>
               )}
             </Link>
             <Link to="/user-info" className="userInfoBtn">{getDisplayName()}님</Link>
@@ -111,8 +97,8 @@ function Home() {
         ) : (
           <div className="userNav">
             <Link to="/all-posts" className="headerLink">전체 게시판</Link>
-            <span onClick={handleRequireLogin} className="writeHeaderButton" style={{ cursor: "pointer" }}>게시글 작성</span>
-            <span onClick={handleRequireLogin} className="alarmBellButton" style={{ cursor: "pointer" }} title="알림">🔔</span>
+            <span onClick={handleRequireLogin} className="writeHeaderButton pointer-cursor">게시글 작성</span>
+            <span onClick={handleRequireLogin} className="alarmBellButton pointer-cursor" title="알림">🔔</span>
             <Link to="/register" className="headerLink headerLinkOutline">회원가입</Link>
             <Link to="/login" className="headerLink headerLinkFilled">로그인</Link>
           </div>
@@ -126,110 +112,84 @@ function Home() {
           <h1 className="heroTitle">팀 매칭 서비스</h1>
         </div>
 
-      {/* 가운데 검색창 */}
-      <div className="searchBarContainer">
-        <div className="searchInputWrapper">
-          <span className="searchIcon">🔍</span>
-          <input
-            type="text"
-            className="searchInput"
-            placeholder="게시글 제목, 내용, 과목, 작성자로 검색하세요..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+        {/* 가운데 검색창 */}
+        <div className="searchBarContainer">
+          <div className="searchInputWrapper">
+            <span className="searchIcon">🔍</span>
+            <input
+              type="text"
+              className="searchInput"
+              placeholder="게시글 제목, 내용, 과목, 작성자로 검색하세요..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <button
+                className="searchClearBtn"
+                onClick={() => setSearchQuery("")}
+                title="검색어 지우기"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* 게시글 목록 헤더 */}
+        <div className="postListHeader">
+          <h3>게시글 목록</h3>
           {searchQuery && (
-            <button
-              className="searchClearBtn"
-              onClick={() => setSearchQuery("")}
-              title="검색어 지우기"
-            >
-              ✕
-            </button>
+            <span className="searchResultCount">
+              &quot;{searchQuery}&quot; 검색 결과: {filteredPosts.length}건
+            </span>
+          )}
+        </div>
+
+        {/* 게시글 카드 목록 */}
+        <div className="postList">
+          {filteredPosts.length > 0 ? (
+            filteredPosts.map((post) => (
+              <Link to={`/posts/${post.id}`} className="postCard" key={post.id}>
+                <div className="postCardTop">
+                  {post.category ? (
+                    <span className="postCategoryBadge">{post.category}</span>
+                  ) : (
+                    <span></span> 
+                  )}
+                  
+                  {user && post.authorId === user.studentId ? (
+                    <span className="cardBadge badgeMyPost">내 게시물</span>
+                  ) : post.isClosed ? (
+                    <span className="cardBadge badgeClosed">신청 마감</span>
+                  ) : appliedPostIds.map(String).includes(post.id.toString()) ? (
+                    <span className="cardBadge badgeApplied">신청 완료</span>
+                  ) : (
+                    <span className="cardBadge badgeAvailable">신청 가능</span>
+                  )}
+                </div>
+                <h4>{post.title}</h4>
+                <p className="postContentSnippet">
+                  {post.content && post.content.length > 60
+                    ? post.content.slice(0, 60) + "..."
+                    : post.content}
+                </p>
+                <div className="postCardMeta">
+                  <span className="postAuthor">작성자: {post.author || "임시 사용자"}</span>
+                  <span className="postDate">작성일: {post.date}</span>
+                </div>
+              </Link>
+            ))
+          ) : (
+            /* 검색 결과 없을 때 빈 상태 */
+            <div className="emptyState">
+              <p className="emptyStateIcon">🔍</p>
+              <p className="emptyStateText">
+                &quot;{searchQuery}&quot;에 해당하는 게시글이 없습니다.
+              </p>
+            </div>
           )}
         </div>
       </div>
-
-      {/* 게시글 목록 헤더 */}
-      <div className="postListHeader">
-        <h3>게시글 목록</h3>
-        {searchQuery && (
-          <span className="searchResultCount">
-            &quot;{searchQuery}&quot; 검색 결과: {filteredPosts.length}건
-          </span>
-        )}
-      </div>
-
-      {/* 게시글 카드 목록 */}
-      <div className="postList">
-        {filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => (
-            // /posts/:id 형태의 경로로 연결
-            <Link to={`/posts/${post.id}`} className="postCard" key={post.id}>
-              <div className="postCardTop" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                {post.category && (
-                  <span className="postCategoryBadge">{post.category}</span>
-                )}
-                {user && post.authorId === user.studentId ? (
-                  <span className="myPostBadge" style={{
-                    backgroundColor: '#8b5cf6',
-                    color: 'white',
-                    fontSize: '11px',
-                    fontWeight: 'bold',
-                    padding: '3px 8px',
-                    borderRadius: '6px'
-                  }}>내 게시물</span>
-                ) : post.isClosed ? (
-                  <span className="closedBadge" style={{
-                    backgroundColor: '#ef4444',
-                    color: 'white',
-                    fontSize: '11px',
-                    fontWeight: 'bold',
-                    padding: '3px 8px',
-                    borderRadius: '6px'
-                  }}>신청 마감</span>
-                ) : appliedPostIds.map(String).includes(post.id.toString()) ? (
-                  <span className="appliedBadge" style={{
-                    backgroundColor: '#e2e8f0',
-                    color: '#64748b',
-                    fontSize: '11px',
-                    fontWeight: 'bold',
-                    padding: '3px 8px',
-                    borderRadius: '6px'
-                  }}>신청 완료</span>
-                ) : (
-                  <span className="unappliedBadge" style={{
-                    backgroundColor: '#10b981',
-                    color: 'white',
-                    fontSize: '11px',
-                    fontWeight: 'bold',
-                    padding: '3px 8px',
-                    borderRadius: '6px'
-                  }}>신청 가능</span>
-                )}
-              </div>
-              <h4>{post.title}</h4>
-              <p className="postContentSnippet">
-                {post.content && post.content.length > 60
-                  ? post.content.slice(0, 60) + "..."
-                  : post.content}
-              </p>
-              <div className="postCardMeta">
-                <span className="postAuthor">작성자: {post.author || "임시 사용자"}</span>
-                <span className="postDate">작성일: {post.date}</span>
-              </div>
-            </Link>
-          ))
-        ) : (
-          /* 검색 결과 없을 때 빈 상태 */
-          <div className="emptyState">
-            <p className="emptyStateIcon">🔍</p>
-            <p className="emptyStateText">
-              &quot;{searchQuery}&quot;에 해당하는 게시글이 없습니다.
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
     </>
   );
 }

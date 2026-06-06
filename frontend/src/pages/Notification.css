@@ -1,0 +1,319 @@
+/* ==========================================
+   1. 글로벌 헤더 영역 (전체 공통 일관성 유지)
+   ========================================== */
+.globalHeaderLinks {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.globalHeaderLinks > * {
+  pointer-events: auto;
+}
+
+.headerLogoLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.logoEmoji {
+  font-size: 20px;
+  margin: 0;
+}
+
+.logoTitle {
+  font-weight: 700;
+  font-size: 15px;
+  color: #20488D;
+}
+
+.headerLink {
+  text-decoration: none;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  transition: all 0.15s ease;
+}
+
+.headerLink:hover {
+  background-color: #e2e8f0;
+  color: #20488D;
+}
+
+.writeHeaderButton {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  color: #475569;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.writeHeaderButton:hover {
+  background-color: #e2e8f0;
+  color: #20488D;
+}
+
+.alarmBellButton {
+  margin-left: 4px;
+  position: relative;
+  text-decoration: none;
+  background: white;
+  border: 1px solid #e2e8f0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.alarmBellButton:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.unreadBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userNav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userInfoBtn {
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: white;
+  color: #20488D;
+  border: 1px solid #b9cfe7;
+  transition: all 0.15s ease;
+}
+
+.userInfoBtn:hover {
+  background-color: #f0f4f8;
+}
+
+.logoutBtn {
+  padding: 7px 14px;
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: none;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.logoutBtn:hover {
+  background-color: #fca5a5;
+}
+
+.headerLinkOutline {
+  background-color: transparent;
+  border: 1px solid #b9cfe7;
+  color: #20488D;
+}
+
+.headerLinkOutline:hover {
+  background-color: #f0f4f8;
+}
+
+.headerLinkFilled {
+  background: #20488D;
+  color: white !important;
+}
+
+.headerLinkFilled:hover {
+  background: #16366f;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+}
+
+
+/* ==========================================
+   2. 레이아웃 메인 섹션
+   ========================================== */
+.container {
+  width: 90%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px 0 60px 0;
+}
+
+.notificationMainTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 32px;
+  letter-spacing: -0.5px;
+}
+
+.notificationSection {
+  margin-bottom: 36px;
+}
+
+/* 그룹 타이틀 언더라인 구조화 */
+.sectionTitle {
+  font-size: 15px;
+  font-weight: 700;
+  padding-bottom: 10px;
+  margin: 0 0 16px 0;
+}
+
+.unreadSectionTitle {
+  color: #dc2626;
+  border-bottom: 2px solid #fee2e2;
+}
+
+.readSectionTitle {
+  color: #64748b;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.noticeListGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+/* ==========================================
+   3. 알림 카드 박스 (Notice Box) 피드 스타일
+   ========================================== */
+.noticeBox {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.15s ease;
+}
+
+/* 3-1. 새로운 알림 (읽지 않음 상태 강조) */
+.unreadNoticeBox {
+  border-left: 4px solid #ef4444;
+}
+.unreadNoticeBox:hover {
+  border-color: #fca5a5 #fca5a5 #fca5a5 #ef4444;
+}
+
+/* 3-2. 기존 알림 (정돈된 흐린 상태) */
+.readNoticeBox {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+}
+.readNoticeBox:hover {
+  border-color: #cbd5e1;
+}
+
+/* 내부 헤더 구조 */
+.noticeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.noticeTypeTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.unreadTypeTitle { color: #dc2626; }
+.readTypeTitle { color: #475569; }
+
+.noticeMetaGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.noticeTime {
+  font-size: 12px;
+  color: #64748b;
+}
+.readNoticeTime {
+  color: #94a3b8;
+}
+
+/* 알림 내 삭제 링크형 버튼 */
+.noticeDeleteBtn {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.1s ease;
+}
+
+.unreadDeleteBtn { color: #ef4444; }
+.unreadDeleteBtn:hover { color: #b91c1c; text-decoration: underline; }
+
+.readDeleteBtn { color: #94a3b8; }
+.readDeleteBtn:hover { color: #64748b; text-decoration: underline; }
+
+/* 본문 텍스트 */
+.noticeMessageText {
+  margin: 0;
+  font-size: 14px;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+.readMessageText {
+  color: #64748b;
+}
+
+
+/* ==========================================
+   4. 빈 화면 상태 (Notification Empty State)
+   ========================================== */
+.notificationEmptyState {
+  text-align: center;
+  padding: 60px 20px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+}

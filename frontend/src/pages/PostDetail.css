@@ -1,0 +1,352 @@
+/* ==========================================
+   1. 글로벌 헤더 영역 (일관성 유지)
+   ========================================== */
+.globalHeaderLinks {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+}
+
+.headerLogoLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.logoEmoji { font-size: 20px; margin: 0; }
+.logoTitle { font-weight: 700; font-size: 15px; color: #20488D; }
+
+.headerLink {
+  text-decoration: none;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  transition: all 0.15s ease;
+}
+.headerLink:hover { background-color: #e2e8f0; color: #20488D; }
+
+.writeHeaderButton {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+}
+.writeHeaderButton:hover { background-color: #e2e8f0; color: #20488D; }
+
+.alarmBellButton {
+  position: relative;
+  text-decoration: none;
+  background: white;
+  border: 1px solid #e2e8f0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unreadBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userNav { display: flex; align-items: center; gap: 10px; }
+.userInfoBtn {
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: white;
+  color: #20488D;
+  border: 1px solid #b9cfe7;
+}
+
+.logoutBtn {
+  padding: 7px 14px;
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: none;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.headerLinkOutline { background-color: transparent; border: 1px solid #b9cfe7; color: #20488D; }
+.headerLinkFilled { background: #20488D; color: white !important; }
+.headerLinkFilled:hover { background: #16366f; }
+.pointer-cursor { cursor: pointer; }
+
+
+/* ==========================================
+   2. 상세 화면 전용 레이아웃 (SaaS 클린 아키텍처)
+   ========================================== */
+.detailContainer {
+  width: 90%;
+  max-width: 680px; /* 가독성에 최적화된 칼럼 본문 폭 */
+  margin: 0 auto;
+  padding: 40px 0 80px 0;
+}
+
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.statusMessageText {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.detailBox {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 상단 알림 메시지 팝업 플랫화 */
+.detailAlertBox {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.successAlert {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.infoAlert {
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+/* 타이틀 및 메타 정보 */
+.detailMainTitle {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 14px 0;
+  letter-spacing: -0.5px;
+  line-height: 1.3;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 32px;
+}
+
+.metaItem strong {
+  color: #475569;
+  font-weight: 600;
+}
+
+.metaDivider {
+  color: #cbd5e1;
+}
+
+
+/* ==========================================
+   3. 정보 패널 & 본문 뷰 (Clean Info Panel)
+   ========================================== */
+.detailContentPanel {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 28px;
+}
+
+/* 그리드 구조 정돈 */
+.infoGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+  color: #334155;
+}
+
+.infoGridItem strong {
+  display: inline-block;
+  width: 90px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.categoryBadge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #20488D;
+  background-color: #f0f4f8;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.detailDivider {
+  border: 0;
+  border-top: 1px solid #f1f5f9;
+  margin: 24px 0;
+}
+
+/* 본문 글로벌 타이틀 및 텍스트 */
+.bodyLabel {
+  margin: 0 0 10px 0;
+  font-size: 13.5px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.bodyParagraph {
+  margin: 0;
+  font-size: 15px;
+  color: #1e293b;
+  line-height: 1.6;
+  white-space: pre-wrap; /* 줄바꿈 호환 */
+}
+
+
+/* ==========================================
+   4. 버튼 제어 컨트롤러 (SaaS 플랫 디자인)
+   ========================================== */
+
+/* 4-1. 일반 유저용 와이드 버튼 */
+.primaryApplySubmitBtn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background-color: #20488D;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.primaryApplySubmitBtn:hover { background-color: #16366f; }
+.primaryApplySubmitBtn:active { background-color: #0f2752; }
+
+/* 신청완료 및 마감 상태 버튼 커스텀 */
+.primaryApplySubmitBtn.statusApplied {
+  background-color: #e2e8f0;
+  color: #475569;
+  cursor: not-allowed;
+}
+.primaryApplySubmitBtn.statusClosed {
+  background-color: #fee2e2;
+  color: #ef4444;
+  cursor: not-allowed;
+}
+
+/* 4-2. 작성자 본인 제어 래퍼 그룹 */
+.authorControlWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.actionBtnGroup {
+  display: flex;
+  gap: 12px;
+}
+
+.actionStateBtn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.actionStateBtn:hover { opacity: 0.9; }
+
+.btnReopen { background-color: #10b981; } /* 초록색 */
+.btnClose { background-color: #dc2626; }  /* 빨간색 */
+
+.actionDeleteBtn {
+  flex: 1;
+  padding: 14px;
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.actionDeleteBtn:hover { background-color: #fca5a5; }
+
+/* 본인 게시물 인지용 하단 고정 비활성 바 */
+.disabledStatusBtn {
+  width: 100%;
+  padding: 14px;
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: not-allowed;
+}
+
+/* 예외 처리용 에러 경고창 */
+.detailErrorAlert {
+  color: #dc2626;
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.detailBackHomeBtn {
+  color: #20488D;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+.detailBackHomeBtn:hover { text-decoration: underline; }

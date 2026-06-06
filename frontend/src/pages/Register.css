@@ -1,0 +1,211 @@
+/* ==========================================
+   1. 글로벌 헤더 영역 (일관성 유지)
+   ========================================== */
+.globalHeaderLinks {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+}
+
+.headerLogoLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.logoEmoji { font-size: 20px; margin: 0; }
+.logoTitle { font-weight: 700; font-size: 15px; color: #20488D; }
+
+.headerLink {
+  text-decoration: none;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  transition: all 0.15s ease;
+}
+.headerLink:hover { background-color: #e2e8f0; color: #20488D; }
+
+.writeHeaderButton {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+}
+.writeHeaderButton:hover { background-color: #e2e8f0; color: #20488D; }
+
+.alarmBellButton {
+  text-decoration: none;
+  background: white;
+  border: 1px solid #e2e8f0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userNav { display: flex; align-items: center; gap: 10px; }
+
+.headerLinkOutline {
+  background-color: transparent;
+  border: 1px solid #b9cfe7;
+  color: #20488D;
+}
+.headerLinkOutline:hover { background-color: #f0f4f8; }
+
+/* 회원가입 탭 현재 페이지 활성화 하이라이트 */
+.headerLinkOutline.currentTab {
+  background-color: #f0f4f8;
+  border-color: #20488D;
+}
+
+.headerLinkFilled { background: #20488D; color: white !important; }
+.headerLinkFilled:hover { background: #16366f; }
+.pointer-cursor { cursor: pointer; }
+
+
+/* ==========================================
+   2. 인증 레이아웃 및 카드 세팅 (Auth Card)
+   ========================================== */
+.authContainer {
+  width: 90%;
+  max-width: 440px; /* 폼 중심 콤팩트 레이아웃 */
+  margin: 0 auto;
+  padding: 50px 0 80px 0;
+}
+
+.authMainTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  margin-bottom: 28px;
+  letter-spacing: -0.5px;
+}
+
+.registerFormCard {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+/* ==========================================
+   3. 정돈된 인풋 필드 폼 커스텀 (Form Controls)
+   ========================================== */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.authInputField {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  font-size: 14.5px;
+  color: #1e293b;
+  background-color: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+/* 포커스 시 테두리 색상 및 메인 테마 은은한 섀도우 효과 */
+.authInputField:focus {
+  border-color: #20488D;
+  box-shadow: 0 0 0 3px rgba(32, 72, 141, 0.12);
+}
+
+.authInputField::placeholder {
+  color: #94a3b8;
+  font-size: 13.5px;
+}
+
+
+/* ==========================================
+   4. 알림 팝업 및 서브미트 버튼 (Action Area)
+   ========================================== */
+.authAlertBox {
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.errorAlert {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.successAlert {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.authSubmitBtn {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background-color: #20488D;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.15s ease;
+}
+
+.authSubmitBtn:hover { background-color: #16366f; }
+.authSubmitBtn:active { background-color: #0f2752; }
+
+/* 가이드 텍스트 및 하단 인라인 링크 */
+.authRedirectText {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: #64748b;
+  text-align: center;
+}
+
+.authInlineLink {
+  color: #20488D;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.authInlineLink:hover {
+  text-decoration: underline;
+}

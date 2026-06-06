@@ -1,0 +1,382 @@
+/* ==========================================
+   1. 글로벌 헤더 영역 (플랫 & 심플)
+   ========================================== */
+.globalHeaderLinks {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.globalHeaderLinks > * {
+  pointer-events: auto;
+}
+
+.headerLogoLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.logoEmoji {
+  font-size: 20px;
+  margin: 0;
+}
+
+.logoTitle {
+  font-weight: 700;
+  font-size: 15px;
+  color: #20488D;
+}
+
+.headerLink {
+  text-decoration: none;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  transition: all 0.15s ease;
+}
+
+.headerLink:hover {
+  background-color: #e2e8f0;
+  color: #20488D;
+}
+
+.writeHeaderButton {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  color: #475569;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.writeHeaderButton:hover {
+  background-color: #e2e8f0;
+  color: #20488D;
+}
+
+.alarmBellButton {
+  margin-left: 4px;
+  position: relative;
+  text-decoration: none;
+  background: white;
+  border: 1px solid #e2e8f0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.alarmBellButton:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.unreadBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userNav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userInfoBtn {
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: white;
+  color: #20488D;
+  border: 1px solid #b9cfe7;
+  transition: all 0.15s ease;
+}
+
+.userInfoBtn:hover {
+  background-color: #f0f4f8;
+}
+
+.logoutBtn {
+  padding: 7px 14px;
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: none;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.logoutBtn:hover {
+  background-color: #fca5a5;
+}
+
+.headerLinkOutline {
+  background-color: transparent;
+  border: 1px solid #b9cfe7;
+  color: #20488D;
+}
+
+.headerLinkOutline:hover {
+  background-color: #f0f4f8;
+}
+
+.headerLinkFilled {
+  background: #20488D;
+  color: white !important;
+}
+
+.headerLinkFilled:hover {
+  background: #16366f;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+}
+
+
+/* ==========================================
+   2. 레이아웃 & 메인 히어로 (초심플)
+   ========================================== */
+.container {
+  width: 90%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px 0 60px 0;
+}
+
+.homeHero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.heroEmoji {
+  font-size: 56px;
+  margin-bottom: 12px;
+}
+
+.heroTitle {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+}
+
+
+/* ==========================================
+   3. 검색창 (Search Bar) - 군더더기 없는 디자인
+   ========================================== */
+.searchBarContainer {
+  margin-bottom: 48px;
+}
+
+.searchInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 4px 8px;
+  transition: all 0.2s ease;
+}
+
+.searchInputWrapper:focus-within {
+  border-color: #20488D;
+  box-shadow: 0 0 0 3px rgba(32, 72, 141, 0.08);
+}
+
+.searchIcon {
+  font-size: 16px;
+  padding: 0 10px;
+  color: #94a3b8;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px 4px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #1e293b;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: #94a3b8;
+}
+
+.searchClearBtn {
+  background: #e2e8f0;
+  border: none;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-right: 4px;
+}
+
+
+/* ==========================================
+   4. 게시글 목록 영역 (정돈된 피드 스타일)
+   ========================================== */
+.postListHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.postListHeader h3 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 17px;
+  color: #0f172a;
+}
+
+.searchResultCount {
+  font-size: 12.5px;
+  color: #20488D;
+  font-weight: 600;
+  background-color: #f0f4f8;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.postList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+/* ==========================================
+   5. 게시글 카드 (Post Card) - 플랫 보더 디자인
+   ========================================== */
+.postCard {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.postCard:hover {
+  border-color: #20488D;
+  background-color: #fafafa;
+}
+
+.postCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 과목명 배지 (연한 블루 솔리드) */
+.postCategoryBadge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #20488D;
+  background-color: #f0f4f8;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.postCard h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.postContentSnippet {
+  margin: 0;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.postCardMeta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: #64748b;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 12px;
+}
+
+/* 플랫해진 모집 상태 텍스트 배지 */
+.cardBadge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+.badgeMyPost { background-color: #e2e8f0; color: #334155; }
+.badgeClosed { background-color: #fee2e2; color: #ef4444; }
+.badgeApplied { background-color: #f1f5f9; color: #64748b; }
+.badgeAvailable { background-color: #d1fae5; color: #065f46; }
+
+
+/* ==========================================
+   6. 빈 검색 결과 (Empty State)
+   ========================================== */
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+}
+
+.emptyStateIcon { font-size: 28px; margin: 0 0 8px 0; }
+.emptyStateText { font-size: 14px; color: #64748b; margin: 0; }

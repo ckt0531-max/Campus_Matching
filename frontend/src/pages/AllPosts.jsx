@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
+import "./AllPosts.css"; // CSS 파일 임포트
 
 function AllPosts() {
   const [posts, setPosts] = useState([]);
@@ -98,45 +99,19 @@ function AllPosts() {
     <>
       {/* 상단 통합 네비게이션 헤더 */}
       <div className="globalHeaderLinks">
-        <Link to="/" className="headerLogoLink" style={{
-          textDecoration: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          marginRight: 'auto',
-          padding: '8px 16px',
-          borderRadius: '14px',
-          background: 'white',
-          border: '1px solid rgba(226, 232, 240, 0.8)',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
-        }}>
-          <span className="logoEmoji" style={{ fontSize: '24px', margin: 0 }}>🤝</span>
-          <span className="logoTitle" style={{ fontWeight: 800, fontSize: '18px' }}>팀 매칭 서비스</span>
+        <Link to="/" className="headerLogoLink">
+          <span className="logoEmoji">🤝</span>
+          <span className="logoTitle">팀 매칭 서비스</span>
         </Link>
 
         {user ? (
           <>
-            <Link to="/all-posts" className="headerLink" style={{ backgroundColor: "#e0e7ff", color: "#4f46e5" }}>전체 게시판</Link>
+            <Link to="/all-posts" className="headerLink headerLink--active">전체 게시판</Link>
             <Link to="/write" className="writeHeaderButton">게시글 작성</Link>
-            <Link to="/notification" className="alarmBellButton" style={{ position: "relative" }} title="알림">
+            <Link to="/notification" className="alarmBellButton" title="알림">
               🔔
               {unreadCount > 0 && (
-                <span className="unreadBadge" style={{
-                  position: "absolute",
-                  top: "-4px",
-                  right: "-4px",
-                  backgroundColor: "#ef4444",
-                  color: "white",
-                  fontSize: "10px",
-                  fontWeight: "bold",
-                  borderRadius: "50%",
-                  width: "18px",
-                  height: "18px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 2px 4px rgba(239, 68, 68, 0.4)"
-                }}>{unreadCount}</span>
+                <span className="unreadBadge">{unreadCount}</span>
               )}
             </Link>
             <Link to="/user-info" className="userInfoBtn">{getDisplayName()}님</Link>
@@ -144,9 +119,9 @@ function AllPosts() {
           </>
         ) : (
           <div className="userNav">
-            <Link to="/all-posts" className="headerLink" style={{ backgroundColor: "#e0e7ff", color: "#4f46e5" }}>전체 게시판</Link>
-            <span onClick={handleRequireLogin} className="writeHeaderButton" style={{ cursor: "pointer" }}>게시글 작성</span>
-            <span onClick={handleRequireLogin} className="alarmBellButton" style={{ cursor: "pointer" }} title="알림">🔔</span>
+            <Link to="/all-posts" className="headerLink headerLink--active">전체 게시판</Link>
+            <span onClick={handleRequireLogin} className="writeHeaderButton pointer-cursor">게시글 작성</span>
+            <span onClick={handleRequireLogin} className="alarmBellButton pointer-cursor" title="알림">🔔</span>
             <Link to="/register" className="headerLink headerLinkOutline">회원가입</Link>
             <Link to="/login" className="headerLink headerLinkFilled">로그인</Link>
           </div>
@@ -154,19 +129,12 @@ function AllPosts() {
       </div>
 
       <div className="wideContainer">
-        <h2 style={{ fontSize: "28px", fontWeight: "800", marginBottom: "10px" }}>전체 게시판 목록</h2>
-        <p style={{ color: "#64748b", marginBottom: "30px", fontSize: "15px" }}>등록된 모든 프로젝트 팀 매칭 게시글을 한눈에 확인할 수 있습니다.</p>
+        <h2 className="boardTitle">전체 게시판 목록</h2>
+        <p className="boardDescription">등록된 모든 프로젝트 팀 매칭 게시글을 한눈에 확인할 수 있습니다.</p>
 
         {/* 필터 및 검색 컨트롤 */}
-        <div style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: "16px",
-          marginBottom: "20px",
-          flexWrap: "wrap"
-        }}>
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+        <div className="filterController">
+          <div className="filterSelectGroup">
             {/* 카테고리 필터 */}
             <select 
               value={selectedCategory} 
@@ -194,8 +162,8 @@ function AllPosts() {
           </div>
 
           {/* 검색창 */}
-          <div style={{ flex: 1, maxWidth: "400px", minWidth: "260px" }}>
-            <div className="searchInputWrapper" style={{ padding: "2px 8px" }}>
+          <div className="searchBarContainer">
+            <div className="searchInputWrapper">
               <span className="searchIcon">🔍</span>
               <input
                 type="text"
@@ -203,7 +171,6 @@ function AllPosts() {
                 placeholder="제목, 내용, 작성자로 검색..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ padding: "8px 4px" }}
               />
               {searchQuery && (
                 <button
@@ -220,19 +187,19 @@ function AllPosts() {
         {/* 테이블 섹션 */}
         <div className="tableSection">
           {loading ? (
-            <div style={{ textAlign: "center", padding: "40px", color: "#64748b" }}>데이터를 로딩 중입니다...</div>
+            <div className="loadingText">데이터를 로딩 중입니다...</div>
           ) : filteredPosts.length > 0 ? (
             <table className="postsTable">
               <thead>
                 <tr>
-                  <th style={{ width: "50px", textAlign: "center" }}>No.</th>
-                  <th style={{ width: "130px" }}>과목</th>
+                  <th className="col-no">No.</th>
+                  <th className="col-category">과목</th>
                   <th>게시글 제목</th>
-                  <th style={{ width: "90px" }}>작성자</th>
-                  <th style={{ width: "80px" }}>모집인원</th>
-                  <th style={{ width: "120px" }}>장소</th>
-                  <th style={{ width: "110px", textAlign: "center" }}>등록일</th>
-                  <th style={{ width: "100px", textAlign: "center" }}>상태</th>
+                  <th className="col-author">작성자</th>
+                  <th className="col-people">모집인원</th>
+                  <th className="col-place">장소</th>
+                  <th className="col-date">등록일</th>
+                  <th className="col-status">상태</th>
                 </tr>
               </thead>
               <tbody>
@@ -242,9 +209,9 @@ function AllPosts() {
 
                   return (
                     <tr key={post.id} onClick={() => navigate(`/posts/${post.id}`)}>
-                      <td style={{ textAlign: "center", color: "#94a3b8", fontWeight: "600" }}>{filteredPosts.length - index}</td>
+                      <td className="cell-no">{filteredPosts.length - index}</td>
                       <td>
-                        <span className="postCategoryBadge" style={{ margin: 0 }}>
+                        <span className="postCategoryBadge">
                           {post.category || "기타"}
                         </span>
                       </td>
@@ -253,51 +220,19 @@ function AllPosts() {
                       </td>
                       <td>{post.author || "익명"}</td>
                       <td>{post.people || "미정"}</td>
-                      <td style={{ color: "#475569", fontSize: "13px" }}>{post.place || "미정"}</td>
-                      <td style={{ textAlign: "center", color: "#64748b", fontSize: "13px" }}>
+                      <td className="cell-place">{post.place || "미정"}</td>
+                      <td className="cell-date">
                         {post.date ? post.date.split(" ")[0] : ""}
                       </td>
-                      <td style={{ textAlign: "center" }}>
+                      <td className="cell-status">
                         {user && post.authorId === user.studentId ? (
-                          <span style={{
-                            backgroundColor: '#ede9fe',
-                            color: '#8b5cf6',
-                            fontSize: '11px',
-                            fontWeight: 'bold',
-                            padding: '4px 8px',
-                            borderRadius: '6px',
-                            border: '1px solid #ddd6fe'
-                          }}>내 게시물</span>
+                          <span className="statusBadge statusMyPost">내 게시물</span>
                         ) : isClosed ? (
-                          <span style={{
-                            backgroundColor: '#fee2e2',
-                            color: '#ef4444',
-                            fontSize: '11px',
-                            fontWeight: 'bold',
-                            padding: '4px 8px',
-                            borderRadius: '6px',
-                            border: '1px solid #fca5a5'
-                          }}>신청 마감</span>
+                          <span className="statusBadge statusClosed">신청 마감</span>
                         ) : hasApplied ? (
-                          <span style={{
-                            backgroundColor: '#f1f5f9',
-                            color: '#64748b',
-                            fontSize: '11px',
-                            fontWeight: 'bold',
-                            padding: '4px 8px',
-                            borderRadius: '6px',
-                            border: '1px solid #cbd5e1'
-                          }}>신청 완료</span>
+                          <span className="statusBadge statusApplied">신청 완료</span>
                         ) : (
-                          <span style={{
-                            backgroundColor: '#d1fae5',
-                            color: '#10b981',
-                            fontSize: '11px',
-                            fontWeight: 'bold',
-                            padding: '4px 8px',
-                            borderRadius: '6px',
-                            border: '1px solid #a7f3d0'
-                          }}>신청 가능</span>
+                          <span className="statusBadge statusAvailable">신청 가능</span>
                         )}
                       </td>
                     </tr>
@@ -306,9 +241,9 @@ function AllPosts() {
               </tbody>
             </table>
           ) : (
-            <div style={{ textAlign: "center", padding: "60px 20px" }}>
-              <p style={{ fontSize: "36px", margin: 0 }}>🔍</p>
-              <p style={{ color: "#94a3b8", fontWeight: "500", marginTop: "10px" }}>해당하는 게시글이 존재하지 않습니다.</p>
+            <div className="noDataContainer">
+              <p className="noDataIcon">🔍</p>
+              <p className="noDataText">해당하는 게시글이 존재하지 않습니다.</p>
             </div>
           )}
         </div>

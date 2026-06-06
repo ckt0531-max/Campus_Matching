@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
+import "./WritePost.css"; // 외부 CSS 파일 바인딩
 
 function WritePost() {
   const [title, setTitle] = useState("");
@@ -74,19 +75,23 @@ function WritePost() {
     // 입력값 검증
     if (!title.trim()) {
       setErrorMsg("제목을 입력해주세요.");
+      setIsSubmitting(false);
       return;
     }
     if (!people.trim()) {
       setErrorMsg("모집 인원을 입력해주세요.");
+      setIsSubmitting(false);
       return;
     }
     const numericRegex = /^[0-9]+$/;
     if (!numericRegex.test(people.trim())) {
       setErrorMsg("모집 인원은 숫자만 입력 가능합니다.");
+      setIsSubmitting(false);
       return;
     }
     if (!content.trim()) {
       setErrorMsg("내용을 입력해주세요.");
+      setIsSubmitting(false);
       return;
     }
 
@@ -115,46 +120,18 @@ function WritePost() {
     <>
       {/* 상단 통합 네비게이션 헤더 */}
       <div className="globalHeaderLinks">
-        <Link to="/" className="headerLogoLink" style={{
-          textDecoration: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          marginRight: 'auto',
-          padding: '8px 16px',
-          borderRadius: '14px',
-          background: 'white',
-          border: '1px solid rgba(226, 232, 240, 0.8)',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
-        }}>
-          <span className="logoEmoji" style={{ fontSize: '22px', margin: 0 }}>🤝</span>
-          <span className="logoTitle" style={{ fontWeight: 800, fontSize: '16px' }}>팀 매칭 서비스</span>
+        <Link to="/" className="headerLogoLink">
+          <span className="logoEmoji">🤝</span>
+          <span className="logoTitle">팀 매칭 서비스</span>
         </Link>
 
         {user ? (
           <>
             <Link to="/all-posts" className="headerLink">전체 게시판</Link>
-            <Link to="/write" className="writeHeaderButton">게시글 작성</Link>
-            <Link to="/notification" className="alarmBellButton" style={{ position: "relative" }} title="알림">
+            <Link to="/write" className="writeHeaderButton activeWriteTab">게시글 작성</Link>
+            <Link to="/notification" className="alarmBellButton" title="알림">
               🔔
-              {unreadCount > 0 && (
-                <span className="unreadBadge" style={{
-                  position: "absolute",
-                  top: "-4px",
-                  right: "-4px",
-                  backgroundColor: "#ef4444",
-                  color: "white",
-                  fontSize: "10px",
-                  fontWeight: "bold",
-                  borderRadius: "50%",
-                  width: "18px",
-                  height: "18px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 2px 4px rgba(239, 68, 68, 0.4)"
-                }}>{unreadCount}</span>
-              )}
+              {unreadCount > 0 && <span className="unreadBadge">{unreadCount}</span>}
             </Link>
             <Link to="/user-info" className="userInfoBtn">{user.name || user.studentId}님</Link>
             <button onClick={handleLogout} className="logoutBtn">로그아웃</button>
@@ -162,65 +139,84 @@ function WritePost() {
         ) : (
           <div className="userNav">
             <Link to="/all-posts" className="headerLink">전체 게시판</Link>
-            <span onClick={handleRequireLogin} className="writeHeaderButton" style={{ cursor: "pointer" }}>게시글 작성</span>
-            <span onClick={handleRequireLogin} className="alarmBellButton" style={{ cursor: "pointer" }} title="알림">🔔</span>
+            <span onClick={handleRequireLogin} className="writeHeaderButton pointer-cursor">게시글 작성</span>
+            <span onClick={handleRequireLogin} className="alarmBellButton pointer-cursor" title="알림">🔔</span>
             <Link to="/register" className="headerLink headerLinkOutline">회원가입</Link>
             <Link to="/login" className="headerLink headerLinkFilled">로그인</Link>
           </div>
         )}
       </div>
 
-      <div className="container">
-        <h2>게시글 작성</h2>
+      {/* 메인 에디터 컨테이너 */}
+      <div className="editorContainer">
+        <h2 className="editorMainTitle">새 팀원 모집하기</h2>
 
-        <form onSubmit={handleWritePost} className="formBox">
-          {errorMsg && <div className="errorAlert">{errorMsg}</div>}
-          {successMsg && <div className="successAlert">{successMsg}</div>}
+        <form onSubmit={handleWritePost} className="editorFormCard">
+          {errorMsg && <div className="editorAlertBox errorAlert">{errorMsg}</div>}
+          {successMsg && <div className="editorAlertBox successAlert">{successMsg}</div>}
 
-          <label className="inputLabel">게시글 제목</label>
-          <input
-            type="text"
-            placeholder="게시글 제목을 입력하세요"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+          <div className="editorFormGroup">
+            <label className="editorInputLabel">게시글 제목</label>
+            <input
+              type="text"
+              placeholder="프로젝트 주제나 스터디 방향성을 알릴 수 있는 제목"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="editorInputField"
+            />
+          </div>
 
-          <label className="inputLabel">과목 선택</label>
-          <select value={subject} onChange={(e) => setSubject(e.target.value)}>
-            <option value="과목 선택">과목 선택</option>
-            <option value="인공지능">인공지능</option>
-            <option value="모바일 프로그래밍">모바일 프로그래밍</option>
-            <option value="소프트웨어 공학">소프트웨어 공학</option>
-            <option value="웹응용기술">웹응용기술</option>
-          </select>
+          <div className="editorFieldGrid">
+            <div className="editorFormGroup">
+              <label className="editorInputLabel">과목 선택</label>
+              <div className="selectWrapper">
+                <select value={subject} onChange={(e) => setSubject(e.target.value)} className="editorSelectField">
+                  <option value="과목 선택">과목 선택</option>
+                  <option value="인공지능">인공지능</option>
+                  <option value="모바일 프로그래밍">모바일 프로그래밍</option>
+                  <option value="소프트웨어 공학">소프트웨어 공학</option>
+                  <option value="웹응용기술">웹응용기술</option>
+                </select>
+              </div>
+            </div>
 
-          <label className="inputLabel">모집 인원 (숫자만 입력 가능)</label>
-          <input
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            placeholder="모집 인원을 숫자로 입력하세요 (예: 3)"
-            value={people}
-            onChange={(e) => setPeople(e.target.value)}
-          />
+            <div className="editorFormGroup">
+              <label className="editorInputLabel">모집 인원</label>
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder="숫자만 입력 (예: 3)"
+                value={people}
+                onChange={(e) => setPeople(e.target.value)}
+                className="editorInputField"
+              />
+            </div>
+          </div>
 
-          <label className="inputLabel">장소</label>
-          <input
-            type="text"
-            placeholder="장소를 입력하세요 (예: 학술정보관 1층)"
-            value={place}
-            onChange={(e) => setPlace(e.target.value)}
-          />
+          <div className="editorFormGroup">
+            <label className="editorInputLabel">선호 모임 장소</label>
+            <input
+              type="text"
+              placeholder="예: 학술정보관 1층 스터디룸 / 비대면 Zoom"
+              value={place}
+              onChange={(e) => setPlace(e.target.value)}
+              className="editorInputField"
+            />
+          </div>
 
-          <label className="inputLabel">게시글 내용</label>
-          <textarea
-            placeholder="게시글 내용을 입력하세요"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
+          <div className="editorFormGroup">
+            <label className="editorInputLabel">상세 내용</label>
+            <textarea
+              placeholder="진행하려는 프로젝트 목표, 선호하는 팀원의 기술 스택이나 역할, 주간 고정 회의 시간대 등을 상세하게 공유해 주세요."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="editorTextAreaField"
+            ></textarea>
+          </div>
 
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "작성 중..." : "작성 완료"}
+          <button type="submit" disabled={isSubmitting} className="editorSubmitBtn">
+            {isSubmitting ? "게시글 등록 중..." : "팀원 모집 시작하기"}
           </button>
         </form>
       </div>

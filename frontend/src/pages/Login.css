@@ -1,0 +1,227 @@
+/* ==========================================
+   1. 글로벌 헤더 영역 (전체 일관성 유지)
+   ========================================== */
+.globalHeaderLinks {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+}
+
+.headerLogoLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.logoEmoji {
+  font-size: 20px;
+  margin: 0;
+}
+
+.logoTitle {
+  font-weight: 700;
+  font-size: 15px;
+  color: #20488D; /* 메인 테마 색상 */
+}
+
+.userNav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerLink {
+  text-decoration: none;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.headerLink:hover {
+  background-color: #e2e8f0;
+  color: #20488D;
+}
+
+.writeHeaderButton {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  color: #475569;
+  transition: all 0.2s ease;
+}
+
+.writeHeaderButton:hover {
+  background-color: #e2e8f0;
+  color: #20488D;
+}
+
+.alarmBellButton {
+  background: white;
+  border: 1px solid #e2e8f0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.alarmBellButton:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.headerLinkOutline {
+  background-color: transparent;
+  border: 1px solid #b9cfe7;
+  color: #20488D;
+}
+
+.headerLinkOutline:hover {
+  background-color: #f0f4f8;
+}
+
+.headerLinkFilled {
+  background: #20488D;
+  color: white !important;
+}
+
+.headerLinkFilled:hover {
+  background: #16366f;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+}
+
+/* ==========================================
+   2. 로그인 화면 전용 스타일 (SaaS 스타일)
+   ========================================== */
+.loginContainer {
+  width: 100%;
+  max-width: 400px; /* 로그인 폼은 좁고 세로로 떨어져야 예쁩니다 */
+  margin: 80px auto 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.loginTitleHeading {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 24px;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+/* 심플하고 플랫한 흰색 박스 */
+.loginFormBox {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: white;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+/* 인풋 레이아웃 묶음 */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputLabel {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.loginInput {
+  padding: 12px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1e293b;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.loginInput:focus {
+  outline: none;
+  border-color: #20488D;
+  box-shadow: 0 0 0 3px rgba(32, 72, 141, 0.1);
+}
+
+.loginInput::placeholder {
+  color: #94a3b8;
+}
+
+/* 에러 알림창 */
+.loginErrorAlert {
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* 깔끔한 플랫 솔리드 버튼 */
+.loginSubmitBtn {
+  margin-top: 8px;
+  padding: 14px;
+  background: #20488D;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.loginSubmitBtn:hover {
+  background: #16366f;
+}
+
+.loginSubmitBtn:active {
+  background: #0f2752;
+}
+
+/* 하단 회원가입 링크 */
+.loginFooter {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13.5px;
+  color: #64748b;
+}
+
+.signupLink {
+  color: #20488D;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.signupLink:hover {
+  text-decoration: underline;
+}

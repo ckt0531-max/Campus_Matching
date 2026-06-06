@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
+import "./Register.css"; // CSS 파일 분리 및 임포트
 
 function Register() {
   const [password, setPassword] = useState("");
@@ -105,70 +106,88 @@ function Register() {
     <>
       {/* 상단 통합 네비게이션 헤더 */}
       <div className="globalHeaderLinks">
-        <Link to="/" className="headerLogoLink" style={{
-          textDecoration: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          marginRight: 'auto',
-          padding: '8px 16px',
-          borderRadius: '14px',
-          background: 'white',
-          border: '1px solid rgba(226, 232, 240, 0.8)',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
-        }}>
-          <span className="logoEmoji" style={{ fontSize: '22px', margin: 0 }}>🤝</span>
-          <span className="logoTitle" style={{ fontWeight: 800, fontSize: '16px' }}>팀 매칭 서비스</span>
+        <Link to="/" className="headerLogoLink">
+          <span className="logoEmoji">🤝</span>
+          <span className="logoTitle">팀 매칭 서비스</span>
         </Link>
 
         <div className="userNav">
           <Link to="/all-posts" className="headerLink">전체 게시판</Link>
-          <span onClick={handleRequireLogin} className="writeHeaderButton" style={{ cursor: "pointer" }}>게시글 작성</span>
-          <span onClick={handleRequireLogin} className="alarmBellButton" style={{ cursor: "pointer" }} title="알림">🔔</span>
-          <Link to="/register" className="headerLink headerLinkOutline" style={{ backgroundColor: "#e0e7ff", color: "#4f46e5" }}>회원가입</Link>
+          <span onClick={handleRequireLogin} className="writeHeaderButton pointer-cursor">게시글 작성</span>
+          <span onClick={handleRequireLogin} className="alarmBellButton pointer-cursor" title="알림">🔔</span>
+          <Link to="/register" className="headerLink headerLinkOutline currentTab">회원가입</Link>
           <Link to="/login" className="headerLink headerLinkFilled">로그인</Link>
         </div>
       </div>
 
-      <div className="container">
-        <h2>회원가입</h2>
+      {/* 회원가입 메인 컨테이너 */}
+      <div className="authContainer">
+        <h2 className="authMainTitle">회원가입</h2>
 
-        <form onSubmit={handleRegister} className="formBox">
-          {errorMsg && <div className="errorAlert">{errorMsg}</div>}
-          {successMsg && <div className="successAlert">{successMsg}</div>}
+        <form onSubmit={handleRegister} className="registerFormCard">
+          {errorMsg && <div className="authAlertBox errorAlert">{errorMsg}</div>}
+          {successMsg && <div className="authAlertBox successAlert">{successMsg}</div>}
 
-          <input
-            type="text"
-            placeholder="이름"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="학번"
-            value={studentId}
-            onChange={(e) => setStudentId(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="학과"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="비밀번호 확인"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <div className="inputGroup">
+            <label className="inputLabel">이름</label>
+            <input
+              type="text"
+              placeholder="홍길동"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="authInputField"
+            />
+          </div>
 
-          <button type="submit">회원가입</button>
+          <div className="inputGroup">
+            <label className="inputLabel">학번</label>
+            <input
+              type="text"
+              placeholder="학번 8자리 입력 (숫자만)"
+              value={studentId}
+              onChange={(e) => setStudentId(e.target.value)}
+              className="authInputField"
+            />
+          </div>
+
+          <div className="inputGroup">
+            <label className="inputLabel">학과</label>
+            <input
+              type="text"
+              placeholder="컴퓨터공학과"
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              className="authInputField"
+            />
+          </div>
+
+          <div className="inputGroup">
+            <label className="inputLabel">비밀번호</label>
+            <input
+              type="password"
+              placeholder="6자 이상 입력"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="authInputField"
+            />
+          </div>
+
+          <div className="inputGroup">
+            <label className="inputLabel">비밀번호 확인</label>
+            <input
+              type="password"
+              placeholder="비밀번호 재입력"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="authInputField"
+            />
+          </div>
+
+          <button type="submit" className="authSubmitBtn">가입하기</button>
+
+          <p className="authRedirectText">
+            이미 계정이 있으신가요? <Link to="/login" className="authInlineLink">로그인하기</Link>
+          </p>
         </form>
       </div>
     </>
