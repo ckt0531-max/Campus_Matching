@@ -72,25 +72,39 @@ function WritePost() {
     setErrorMsg("");
     setSuccessMsg("");
 
-    // 입력값 검증
+    // 1. 제목 검증
     if (!title.trim()) {
-      setErrorMsg("제목을 입력해주세요.");
+      const msg = "제목을 입력해주세요.";
+      alert(msg);
+      setErrorMsg(msg);
       setIsSubmitting(false);
       return;
     }
+    
+    // 2. 모집 인원 빈 값 검증
     if (!people.trim()) {
-      setErrorMsg("모집 인원을 입력해주세요.");
+      const msg = "모집 인원을 입력해주세요.";
+      alert(msg);
+      setErrorMsg(msg);
       setIsSubmitting(false);
       return;
     }
+    
+    // 3. 모집 인원 숫자 정규식 검증
     const numericRegex = /^[0-9]+$/;
     if (!numericRegex.test(people.trim())) {
-      setErrorMsg("모집 인원은 숫자만 입력 가능합니다.");
+      const msg = "모집 인원은 숫자만 입력 가능합니다.";
+      alert(msg);
+      setErrorMsg(msg);
       setIsSubmitting(false);
       return;
     }
+    
+    // 4. 내용 검증
     if (!content.trim()) {
-      setErrorMsg("내용을 입력해주세요.");
+      const msg = "내용을 입력해주세요.";
+      alert(msg);
+      setErrorMsg(msg);
       setIsSubmitting(false);
       return;
     }
