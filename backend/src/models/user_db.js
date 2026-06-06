@@ -61,7 +61,9 @@ class User extends Sequelize.Model {
         });
     }
 
-    static associate(db) {}
+    static associate(db) {
+        db.User.hasMany(db.Post, { foreignKey: "userId", sourceKey: "studentId" });
+    }
 }
 
 export default User;

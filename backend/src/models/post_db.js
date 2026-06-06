@@ -16,6 +16,31 @@ class Post extends Sequelize.Model {
                 type: Sequelize.TEXT,
                 allowNull: false,
             },
+            category: {
+                type: Sequelize.STRING(50),
+                allowNull: true,
+            },
+            people: {
+                type: Sequelize.STRING(20),
+                allowNull: true,
+            },
+            place: {
+                type: Sequelize.STRING(100),
+                allowNull: true,
+            },
+            userId: {
+                type: Sequelize.STRING(20),
+                allowNull: true,
+                references: {
+                    model: 'users',
+                    key: 'studentId',
+                }
+            },
+            isClosed: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                defaultValue: false,
+            },
         }, {
             sequelize,
             timestamps: true,

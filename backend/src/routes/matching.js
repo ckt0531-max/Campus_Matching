@@ -121,15 +121,23 @@ router.post('/notifications/apply', async (req, res) => {
         const message =
             `[${teamTitle}] 팀에 ${senderName}(${senderId}) 님이 신청했습니다.`;
 
-        // 알림 저장
+        // 알림 저장 (작성자에게)
         const notification = await Notification.create({
-
             senderId,
             receiverId,
             teamTitle,
             type: 'apply',
             message
+        });
 
+        // 신청자(본인)에게도 알림 저장
+        const senderMessage = `[${teamTitle}] 팀에 신청을 완료했습니다.`;
+        await Notification.create({
+            senderId: receiverId, // 알림 발송자를 게시글 작성자(또는 시스템)으로 간주
+            receiverId: senderId,
+            teamTitle,
+            type: 'apply',
+            message: senderMessage
         });
 
         return res.status(201).json({
@@ -242,5 +250,31 @@ router.patch('/notifications/:id/read', async (req, res) => {
 });
 
 
+
+// ======================
+// [5] 알림 삭제
+// ======================
+
+router.delete('/notifications/:id', async (req, res) => {
+    try {
+        const notification = await Notification.findByPk(req.params.id);
+        if (!notification) {
+            return res.status(404).json({
+                success: false,
+                message: '알림이 존재하지 않습니다.'
+            });
+        }
+        await notification.destroy();
+        return res.status(200).json({
+            success: true,
+            message: '알림 삭제 완료'
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
 
 export default router;

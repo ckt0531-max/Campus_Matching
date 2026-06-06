@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 import db from "../models/index.js";
-const { User, Post, Comment } = db;
+const { User, Post } = db;
 
 const safeString = (value = "") => String(value).trim();
 
@@ -17,30 +17,31 @@ const formatDate = (dateValue) => {
 
 const maskName = (name = "") => {
   const trimmed = safeString(name);
-  if (!trimmed) return "익명";
-  if (trimmed.length === 1) return trimmed;
-  return trimmed[0] + "*".repeat(Math.max(1, trimmed.length - 1));
+  return trimmed || "익명";
 };
 
 const isPostOwner = (post, req) => {
   if (!req.user) return false;
-  return String(post.userId) === String(req.user.id);
+  return String(post.userId) === String(req.user.studentId);
 };
 
 const serializePost = async (postInstance) => {
-  const commentsCount = await Comment.count({
-    where: { postId: postInstance.id },
-  });
+  const commentsCount = 0;
 
-  const authorName = postInstance.User?.nick || "익명";
+  const authorName = postInstance.User?.name || "익명";
 
   return {
     id: postInstance.id,
     title: postInstance.title,
     content: postInstance.content,
+    category: postInstance.category || "기타",
+    people: postInstance.people || "인원 미정",
+    place: postInstance.place || "장소 미정",
     author: maskName(authorName),
+    authorId: postInstance.userId,
     date: formatDate(postInstance.createdAt),
     comments: commentsCount,
+    isClosed: !!postInstance.isClosed,
   };
 };
 
@@ -48,6 +49,9 @@ export const createPost = async (req, res, next) => {
   try {
     const title = safeString(req.body.title);
     const content = safeString(req.body.content);
+    const category = safeString(req.body.category || req.body.subject || "기타");
+    const people = safeString(req.body.people || "인원 미정");
+    const place = safeString(req.body.place || "장소 미정");
 
     if (!req.user) {
       return res.status(401).json({ message: "로그인이 필요합니다." });
@@ -64,11 +68,14 @@ export const createPost = async (req, res, next) => {
     const post = await Post.create({
       title,
       content,
-      userId: req.user.id,
+      category,
+      people,
+      place,
+      userId: req.user.studentId,
     });
 
     const populatedPost = await Post.findByPk(post.id, {
-      include: [{ model: User, attributes: ["nick"] }],
+      include: [{ model: User, attributes: ["name"] }],
     });
 
     return res.status(201).json(await serializePost(populatedPost));
@@ -94,7 +101,7 @@ export const getPosts = async (req, res, next) => {
 
     const posts = await Post.findAll({
       where: whereCondition,
-      include: [{ model: User, attributes: ["nick"] }],
+      include: [{ model: User, attributes: ["name"] }],
       order: [["createdAt", "DESC"]],
     });
 
@@ -111,7 +118,7 @@ export const getPostDetail = async (req, res, next) => {
     const { id } = req.params;
 
     const post = await Post.findByPk(id, {
-      include: [{ model: User, attributes: ["nick"] }],
+      include: [{ model: User, attributes: ["name"] }],
     });
 
     if (!post) {
@@ -132,7 +139,7 @@ export const updatePost = async (req, res, next) => {
     const content = safeString(req.body.content || "");
 
     const post = await Post.findByPk(id, {
-      include: [{ model: User, attributes: ["nick"] }],
+      include: [{ model: User, attributes: ["name"] }],
     });
 
     if (!post) {
@@ -152,6 +159,10 @@ export const updatePost = async (req, res, next) => {
 
     if (content) {
       post.content = content;
+    }
+
+    if (req.body.isClosed !== undefined) {
+      post.isClosed = !!req.body.isClosed;
     }
 
     await post.save();
@@ -177,7 +188,6 @@ export const deletePost = async (req, res, next) => {
       return res.status(403).json({ message: "권한 없음" });
     }
 
-    await Comment.destroy({ where: { postId: post.id } });
     await post.destroy();
 
     return res.json({ message: "삭제 완료" });

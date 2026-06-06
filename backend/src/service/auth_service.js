@@ -1,10 +1,12 @@
 import jwt from "jsonwebtoken";
 
 export const serializeUser = (user) => ({
-  id: user.id,
-  nick: user.nick,
+  studentId: user.studentId,
+  name: user.name,
+  department: user.department,
   preferredRole: user.preferredRole,
-  provider: user.provider || "local",
+  skills: user.skills,
+  introduction: user.introduction,
 });
 
 export const signAccessToken = (user) => {
@@ -12,9 +14,8 @@ export const signAccessToken = (user) => {
 
   return jwt.sign(
     {
-      sub: user.id,
-      nick: user.nick,
-      provider: user.provider,
+      sub: user.studentId,
+      name: user.name,
     },
     secretKey,
     {

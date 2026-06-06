@@ -1,60 +1,236 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { api } from "../api";
 
 function Home() {
-  const posts = [
-    {
-      id: 1,
-      title: "인공지능 팀플 팀원 모집",
-      content: "함께 인공지능 팀플을 진행할 팀원을 모집합니다.",
-    },
-    {
-      id: 2,
-      title: "웹 프로젝트 팀원 모집",
-      content: "React를 활용한 웹 프로젝트를 같이 할 팀원을 구합니다.",
-    },
-    {
-      id: 3,
-      title: "C언어 과제 스터디 모집",
-      content: "C언어 과제를 같이 공부할 스터디원을 모집합니다.",
-    },
-  ];
+  const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
+  const [user, setUser] = useState(() => {
+    const loggedInUser = localStorage.getItem("user");
+    return loggedInUser ? JSON.parse(loggedInUser) : null;
+  });
+
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const handleRequireLogin = (e) => {
+    e.preventDefault();
+    alert("로그인이 필요한 서비스입니다.");
+    navigate("/login");
+  };
+
+  // 실시간 검색 필터링용 상태
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // 게시글 리스트 및 알림 로드
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const postsList = await api.get("/posts");
+        setPosts(postsList);
+
+        if (user && user.studentId) {
+          const notiRes = await api.get(`/notifications/${user.studentId}`);
+          if (notiRes && notiRes.success && Array.isArray(notiRes.data)) {
+            const count = notiRes.data.filter((n) => !n.isRead).length;
+            setUnreadCount(count);
+          }
+        }
+      } catch (err) {
+        console.error("Home 데이터 로딩 에러:", err);
+      }
+    };
+
+    loadData();
+  }, [user]);
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout").catch(() => {});
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      setUser(null);
+      alert("로그아웃 되었습니다.");
+    }
+  };
+
+  // 검색어 기반 게시글 필터링 (제목, 내용, 카테고리 통합 검색)
+  const filteredPosts = posts.filter((post) => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      (post.title && post.title.toLowerCase().includes(query)) ||
+      (post.content && post.content.toLowerCase().includes(query)) ||
+      (post.category && post.category.toLowerCase().includes(query)) ||
+      (post.author && post.author.toLowerCase().includes(query))
+    );
+  });
+
+  const getDisplayName = () => {
+    if (!user) return "";
+    return user.name || user.studentId;
+  };
+
+  // 신청한 게시글 ID 목록 로드 (신청 이력은 로컬 저장소 유지)
+  const appliedPostIds = (() => {
+    const applied = localStorage.getItem("appliedPosts");
+    return applied ? JSON.parse(applied) : [];
+  })();
 
   return (
-    <div className="container">
-      <div className="header">
-        <h2>팀 매칭 서비스</h2>
-
-        <Link to="/notification" className="alarmButton">
-          알림
-        </Link>
+    <>
+      <div className="globalHeaderLinks">
+        {user ? (
+          <>
+            <Link to="/all-posts" className="headerLink">전체 게시판</Link>
+            <Link to="/write" className="writeHeaderButton">게시글 작성</Link>
+            <Link to="/notification" className="alarmBellButton" style={{ position: "relative" }} title="알림">
+              🔔
+              {unreadCount > 0 && (
+                <span className="unreadBadge" style={{
+                  position: "absolute",
+                  top: "-4px",
+                  right: "-4px",
+                  backgroundColor: "#ef4444",
+                  color: "white",
+                  fontSize: "10px",
+                  fontWeight: "bold",
+                  borderRadius: "50%",
+                  width: "18px",
+                  height: "18px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0 2px 4px rgba(239, 68, 68, 0.4)"
+                }}>{unreadCount}</span>
+              )}
+            </Link>
+            <Link to="/user-info" className="userInfoBtn">{getDisplayName()}님</Link>
+            <button onClick={handleLogout} className="logoutBtn">로그아웃</button>
+          </>
+        ) : (
+          <div className="userNav">
+            <Link to="/all-posts" className="headerLink">전체 게시판</Link>
+            <span onClick={handleRequireLogin} className="writeHeaderButton" style={{ cursor: "pointer" }}>게시글 작성</span>
+            <span onClick={handleRequireLogin} className="alarmBellButton" style={{ cursor: "pointer" }} title="알림">🔔</span>
+            <Link to="/register" className="headerLink headerLinkOutline">회원가입</Link>
+            <Link to="/login" className="headerLink headerLinkFilled">로그인</Link>
+          </div>
+        )}
       </div>
 
-      <div className="menuBox">
-        <Link to="/login" className="menuButton">
-          로그인
-        </Link>
-        <Link to="/register" className="menuButton">
-          회원가입
-        </Link>
-        <Link to="/user-info" className="menuButton">
-          정보 등록
-        </Link>
-        <Link to="/write" className="menuButton">
-          게시글 작성
-        </Link>
+      <div className="container">
+        {/* 가운데 정렬 로고 및 텍스트 */}
+        <div className="homeHero">
+          <span className="heroEmoji">🤝</span>
+          <h1 className="heroTitle">팀 매칭 서비스</h1>
+        </div>
+
+      {/* 가운데 검색창 */}
+      <div className="searchBarContainer">
+        <div className="searchInputWrapper">
+          <span className="searchIcon">🔍</span>
+          <input
+            type="text"
+            className="searchInput"
+            placeholder="게시글 제목, 내용, 과목, 작성자로 검색하세요..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button
+              className="searchClearBtn"
+              onClick={() => setSearchQuery("")}
+              title="검색어 지우기"
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </div>
 
-      <h3>게시글 목록</h3>
+      {/* 게시글 목록 헤더 */}
+      <div className="postListHeader">
+        <h3>게시글 목록</h3>
+        {searchQuery && (
+          <span className="searchResultCount">
+            &quot;{searchQuery}&quot; 검색 결과: {filteredPosts.length}건
+          </span>
+        )}
+      </div>
 
+      {/* 게시글 카드 목록 */}
       <div className="postList">
-        {posts.map((post) => (
-          <Link to={`/post/${post.id}`} className="postCard" key={post.id}>
-            <h4>{post.title}</h4>
-            <p>{post.content}</p>
-          </Link>
-        ))}
+        {filteredPosts.length > 0 ? (
+          filteredPosts.map((post) => (
+            // /posts/:id 형태의 경로로 연결
+            <Link to={`/posts/${post.id}`} className="postCard" key={post.id}>
+              <div className="postCardTop" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                {post.category && (
+                  <span className="postCategoryBadge">{post.category}</span>
+                )}
+                {user && post.authorId === user.studentId ? (
+                  <span className="myPostBadge" style={{
+                    backgroundColor: '#8b5cf6',
+                    color: 'white',
+                    fontSize: '11px',
+                    fontWeight: 'bold',
+                    padding: '3px 8px',
+                    borderRadius: '6px'
+                  }}>내 게시물</span>
+                ) : post.isClosed ? (
+                  <span className="closedBadge" style={{
+                    backgroundColor: '#ef4444',
+                    color: 'white',
+                    fontSize: '11px',
+                    fontWeight: 'bold',
+                    padding: '3px 8px',
+                    borderRadius: '6px'
+                  }}>신청 마감</span>
+                ) : appliedPostIds.map(String).includes(post.id.toString()) ? (
+                  <span className="appliedBadge" style={{
+                    backgroundColor: '#e2e8f0',
+                    color: '#64748b',
+                    fontSize: '11px',
+                    fontWeight: 'bold',
+                    padding: '3px 8px',
+                    borderRadius: '6px'
+                  }}>신청 완료</span>
+                ) : (
+                  <span className="unappliedBadge" style={{
+                    backgroundColor: '#10b981',
+                    color: 'white',
+                    fontSize: '11px',
+                    fontWeight: 'bold',
+                    padding: '3px 8px',
+                    borderRadius: '6px'
+                  }}>신청 가능</span>
+                )}
+              </div>
+              <h4>{post.title}</h4>
+              <p className="postContentSnippet">
+                {post.content && post.content.length > 60
+                  ? post.content.slice(0, 60) + "..."
+                  : post.content}
+              </p>
+              <div className="postCardMeta">
+                <span className="postAuthor">작성자: {post.author || "임시 사용자"}</span>
+                <span className="postDate">작성일: {post.date}</span>
+              </div>
+            </Link>
+          ))
+        ) : (
+          /* 검색 결과 없을 때 빈 상태 */
+          <div className="emptyState">
+            <p className="emptyStateIcon">🔍</p>
+            <p className="emptyStateText">
+              &quot;{searchQuery}&quot;에 해당하는 게시글이 없습니다.
+            </p>
+          </div>
+        )}
       </div>
     </div>
+    </>
   );
 }
 
