@@ -11,12 +11,20 @@ const getHeaders = () => {
   return headers;
 };
 
+const handleUnauthorized = (res) => {
+  if (res.status === 401) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  }
+};
+
 export const api = {
   async get(url) {
     const res = await fetch(`${API_BASE}${url}`, {
       headers: getHeaders(),
     });
     if (!res.ok) {
+      handleUnauthorized(res);
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || '요청 처리에 실패했습니다.');
     }
@@ -29,6 +37,7 @@ export const api = {
       body: JSON.stringify(body),
     });
     if (!res.ok) {
+      handleUnauthorized(res);
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || '요청 처리에 실패했습니다.');
     }
@@ -41,6 +50,7 @@ export const api = {
       body: JSON.stringify(body),
     });
     if (!res.ok) {
+      handleUnauthorized(res);
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || '요청 처리에 실패했습니다.');
     }
@@ -52,6 +62,7 @@ export const api = {
       headers: getHeaders(),
     });
     if (!res.ok) {
+      handleUnauthorized(res);
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || '요청 처리에 실패했습니다.');
     }

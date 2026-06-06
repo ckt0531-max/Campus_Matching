@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { api } from "./api";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -11,53 +12,21 @@ import Notification from "./pages/Notification";
 import AllPosts from "./pages/AllPosts";
 
 function App() {
-  // 백엔드 수정 없이 시연용 처리를 위한 초기 게시글 설정
+  // 앱 실행 시 기존 로그인 토큰이 유효한지 검증 (세션 자동 정리)
   useEffect(() => {
-    if (!localStorage.getItem("posts")) {
-      const defaultPosts = [
-        {
-          id: 1,
-          title: "인공지능 팀플 팀원 모집",
-          category: "인공지능",
-          people: "4명",
-          place: "성결관 401호",
-          content: "함께 인공지능 팀플을 진행할 팀원을 모집합니다. AI 기초 지식이 있는 분 대환영합니다!",
-          author: "김철수",
-          date: "2026-06-05",
-        },
-        {
-          id: 2,
-          title: "웹 프로젝트 팀원 모집",
-          category: "웹응용기술",
-          people: "3명",
-          place: "학술정보관",
-          content: "React를 활용한 웹 프로젝트를 같이 할 팀원을 구합니다. 프론트/백엔드 가리지 않고 환영합니다.",
-          author: "이영희",
-          date: "2026-06-04",
-        },
-        {
-          id: 3,
-          title: "C언어 과제 스터디 모집",
-          category: "모바일 프로그래밍",
-          people: "5명",
-          place: "온라인",
-          content: "C언어 과제를 같이 공부할 스터디원을 모집합니다. 매주 스터디 진행합니다.",
-          author: "박민수",
-          date: "2026-06-03",
-        },
-        {
-          id: 4,
-          title: "모바일 프로그래밍 스터디 모집",
-          category: "모바일 프로그래밍",
-          people: "3명",
-          place: "온라인 (Zoom)",
-          content: "모바일 프로그래밍 과제와 시험 대비 스터디 그룹원 모집이 마감되었습니다.",
-          author: "김철수",
-          date: "2026-06-05",
-          isClosed: true,
-        },
-      ];
-      localStorage.setItem("posts", JSON.stringify(defaultPosts));
+    const token = localStorage.getItem("token");
+    if (token) {
+      api.get("/auth/me")
+        .then((userData) => {
+          // 최신 사용자 정보로 동기화
+          localStorage.setItem("user", JSON.stringify(userData));
+        })
+        .catch(() => {
+          // 유효하지 않은 세션일 경우 클리어 후 새로고침
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          window.location.reload();
+        });
     }
   }, []);
 

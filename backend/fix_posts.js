@@ -1,9 +1,14 @@
 import Sequelize from 'sequelize';
 import db from './src/models/index.js';
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const sqliteSequelize = new Sequelize({
     dialect: "sqlite",
-    storage: "./database.sqlite",
+    storage: path.resolve(__dirname, "database.sqlite"),
     logging: false,
 });
 

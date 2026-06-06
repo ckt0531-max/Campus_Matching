@@ -6,8 +6,14 @@ import cors from "cors";
 import dotenv from "dotenv";
 import Sequelize from "sequelize";
 import bcrypt from "bcryptjs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 import db from "./models/index.js";
 
@@ -192,7 +198,7 @@ async function startServer() {
         try {
             const sqliteSequelize = new Sequelize({
                 dialect: "sqlite",
-                storage: "./database.sqlite",
+                storage: path.resolve(__dirname, "../database.sqlite"),
                 logging: false,
             });
 

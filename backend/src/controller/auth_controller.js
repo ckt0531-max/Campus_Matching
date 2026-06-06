@@ -21,6 +21,25 @@ export const signup = async (req, res) => {
     }
 
     const trimmedStudentId = studentId.trim();
+    const studentIdRegex = /^[0-9]+$/;
+    if (!studentIdRegex.test(trimmedStudentId)) {
+      return res.status(400).json({
+        message: "학번은 숫자만 입력 가능합니다.",
+      });
+    }
+
+    const nameRegex = /^[a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ\s]+$/;
+    if (!nameRegex.test(name.trim())) {
+      return res.status(400).json({
+        message: "이름은 한글 또는 영문으로만 입력 가능합니다.",
+      });
+    }
+
+    if (!nameRegex.test(department.trim())) {
+      return res.status(400).json({
+        message: "학과에는 한글과 영문(글자)만 입력 가능합니다.",
+      });
+    }
 
     const existingUser = await User.findOne({ where: { studentId: trimmedStudentId } });
     if (existingUser) {
@@ -133,8 +152,20 @@ export const updateProfile = async (req, res) => {
       return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
     }
 
-    if (name) user.name = name.trim();
-    if (department) user.department = department.trim();
+    if (name) {
+      const nameRegex = /^[a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ\s]+$/;
+      if (!nameRegex.test(name.trim())) {
+        return res.status(400).json({ message: "이름은 한글 또는 영문으로만 입력 가능합니다." });
+      }
+      user.name = name.trim();
+    }
+    if (department) {
+      const nameRegex = /^[a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ\s]+$/;
+      if (!nameRegex.test(department.trim())) {
+        return res.status(400).json({ message: "학과에는 한글과 영문(글자)만 입력 가능합니다." });
+      }
+      user.department = department.trim();
+    }
     if (preferredRole) user.preferredRole = preferredRole;
     if (skills !== undefined) user.skills = skills;
     if (introduction !== undefined) user.introduction = introduction;

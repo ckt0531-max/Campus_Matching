@@ -28,6 +28,10 @@ function UserInfo() {
       case "발표": return "presentation";
       case "코딩": return "research";
       case "팀장": return "leader";
+      case "올라운더": return "all-rounder";
+      case "프론트엔드": return "frontend";
+      case "백엔드": return "backend";
+      case "디자인": return "design";
       default: return "all-rounder";
     }
   };
@@ -38,6 +42,10 @@ function UserInfo() {
       case "presentation": return "발표";
       case "research": return "코딩";
       case "leader": return "팀장";
+      case "all-rounder": return "올라운더";
+      case "frontend": return "프론트엔드";
+      case "backend": return "백엔드";
+      case "design": return "디자인";
       default: return "역할 선택";
     }
   };
@@ -269,6 +277,10 @@ function UserInfo() {
             <label className="inputLabel">역할 선택</label>
             <select value={role} onChange={(e) => setRole(e.target.value)}>
               <option value="역할 선택">역할 선택</option>
+              <option value="올라운더">올라운더</option>
+              <option value="프론트엔드">프론트엔드</option>
+              <option value="백엔드">백엔드</option>
+              <option value="디자인">디자인</option>
               <option value="보고서 및 PPT">보고서 및 PPT</option>
               <option value="발표">발표</option>
               <option value="코딩">코딩</option>

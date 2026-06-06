@@ -40,6 +40,9 @@ function Notification() {
             unread.map((n) => api.patch(`/notifications/${n.id}/read`))
           );
 
+          // 로컬 상태도 읽음 상태로 업데이트하여 UI 갱신
+          setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+
           // 처리 후 읽지 않은 개수 초기화
           setUnreadCount(0);
         }
