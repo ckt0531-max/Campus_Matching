@@ -29,7 +29,7 @@ class Post extends Sequelize.Model {
                 allowNull: true,
             },
             userId: {
-                type: Sequelize.STRING(40),
+                type: Sequelize.UUID,
                 allowNull: false,
                 references: {
                     model: 'users',
