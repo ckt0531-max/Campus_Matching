@@ -63,11 +63,7 @@ function UserInfo() {
       try {
         const user = await api.get("/auth/me");
         setCurrentProfile(user);
-        setName(user.name || "");
-        setStudentId(user.studentId || "");
-        setDepartment(user.department || "");
-        setRole(roleToFrontend(user.preferredRole));
-        setSelfIntro(user.introduction || "");
+        // 폼은 기본적으로 비워둡니다. 사용자가 직접 입력해야 변경이 반영됩니다.
 
         const notiRes = await api.get(`/notifications/${user.studentId}`);
         if (notiRes && notiRes.success && Array.isArray(notiRes.data)) {
@@ -105,6 +101,18 @@ function UserInfo() {
       return;
     }
 
+    if (!studentId.trim()) {
+      alert("학번을 입력해주세요.");
+      setErrorMsg("학번을 입력해주세요.");
+      return;
+    }
+    const studentIdRegex = /^\d+$/;
+    if (!studentIdRegex.test(studentId.trim())) {
+      alert("학번은 숫자만 입력해야 합니다.");
+      setErrorMsg("학번은 숫자만 입력해야 합니다.");
+      return;
+    }
+
     if (!department.trim()) {
       setErrorMsg("학과를 입력해주세요.");
       return;
@@ -123,6 +131,7 @@ function UserInfo() {
     try {
       const res = await api.patch("/auth/profile", {
         name: name.trim(),
+        studentId: studentId.trim(),
         department: department.trim(),
         preferredRole: roleToBackend(role),
         introduction: selfIntro.trim(),
@@ -134,6 +143,7 @@ function UserInfo() {
         localStorage.setItem("user", JSON.stringify({
           ...parsed,
           name: res.user.name,
+          studentId: res.user.studentId,
           department: res.user.department,
           introduction: res.user.introduction,
         }));
@@ -232,12 +242,13 @@ function UserInfo() {
             </div>
 
             <div className="profileFormGroup">
-              <label className="profileInputLabel">학번 (수정 불가)</label>
+              <label className="profileInputLabel">학번</label>
               <input
                 type="text"
+                placeholder="학번을 입력하세요"
                 value={studentId}
-                disabled
-                className="profileInputField fieldDisabled"
+                onChange={(e) => setStudentId(e.target.value)}
+                className="profileInputField"
               />
             </div>
 

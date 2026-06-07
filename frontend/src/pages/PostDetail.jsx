@@ -9,10 +9,7 @@ function PostDetail() {
 
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isApplied, setIsApplied] = useState(() => {
-    const appliedList = JSON.parse(localStorage.getItem("appliedPosts") || "[]");
-    return appliedList.map(String).includes(id.toString());
-  });
+  const [isApplied, setIsApplied] = useState(false);
 
   const [showMsg, setShowMsg] = useState(false);
   const [showAppliedMsg, setShowAppliedMsg] = useState(false); 
@@ -33,8 +30,11 @@ function PostDetail() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const data = await api.get(`/posts/${id}`);
+        const currentUserId = user && user.studentId ? user.studentId : null;
+        const url = currentUserId ? `/posts/${id}?currentUserId=${encodeURIComponent(currentUserId)}` : `/posts/${id}`;
+        const data = await api.get(url);
         setPost(data);
+        setIsApplied(!!data.isAppliedByCurrentUser);
       } catch (err) {
         console.error("게시글 로딩 실패:", err);
       } finally {
@@ -130,13 +130,8 @@ function PostDetail() {
         senderName: currentUser.name || currentUser.studentId,
         receiverId: post.authorId,
         teamTitle: post.title,
+        postId: post.id,
       });
-
-      const appliedList = JSON.parse(localStorage.getItem("appliedPosts") || "[]");
-      if (!appliedList.map(String).includes(id.toString())) {
-        appliedList.push(id);
-        localStorage.setItem("appliedPosts", JSON.stringify(appliedList));
-      }
 
       setIsApplied(true);
       setShowMsg(true);

@@ -4,7 +4,7 @@ import { api } from "../api";
 import "./Login.css"; // CSS 분리 및 임포트
 
 function Login() {
-  const [studentId, setStudentId] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
@@ -19,12 +19,12 @@ function Login() {
     e.preventDefault();
     setErrorMsg("");
 
-    if (!studentId.trim() && !password.trim()) {
-      setErrorMsg("학번과 비밀번호를 입력해주세요.");
+    if (!username.trim() && !password.trim()) {
+      setErrorMsg("아이디와 비밀번호를 입력해주세요.");
       return;
     }
-    if (!studentId.trim()) {
-      setErrorMsg("학번을 입력해주세요.");
+    if (!username.trim()) {
+      setErrorMsg("아이디를 입력해주세요.");
       return;
     }
     if (!password.trim()) {
@@ -34,7 +34,7 @@ function Login() {
 
     try {
       const data = await api.post("/auth/login", {
-        studentId: studentId.trim(),
+        username: username.trim(),
         password,
       });
 
@@ -79,12 +79,12 @@ function Login() {
           {errorMsg && <div className="loginErrorAlert">{errorMsg}</div>}
 
           <div className="inputGroup">
-            <label className="inputLabel">학번</label>
+            <label className="inputLabel">아이디</label>
             <input
               type="text"
-              placeholder="학번을 입력하세요"
-              value={studentId}
-              onChange={(e) => setStudentId(e.target.value)}
+              placeholder="아이디를 입력하세요"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="loginInput"
             />
           </div>

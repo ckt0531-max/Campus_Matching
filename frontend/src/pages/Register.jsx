@@ -7,6 +7,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [studentId, setStudentId] = useState("");
   const [department, setDepartment] = useState("");
 
@@ -39,7 +40,20 @@ function Register() {
       return;
     }
 
-    // 2. 학번 검증
+    // 2. 아이디(username) 검증 (영문+숫자 허용)
+    if (!username.trim()) {
+      alert("아이디를 입력해주세요.");
+      setErrorMsg("아이디를 입력해주세요.");
+      return;
+    }
+    const usernameRegex = /^[A-Za-z0-9]+$/;
+    if (!usernameRegex.test(username.trim())) {
+      alert("아이디는 영문과 숫자만 입력 가능합니다.");
+      setErrorMsg("아이디는 영문과 숫자만 입력 가능합니다.");
+      return;
+    }
+
+    // 3. 학번 검증
     if (!studentId.trim()) {
       alert("학번을 입력해주세요.");
       setErrorMsg("학번을 입력해주세요.");
@@ -85,13 +99,16 @@ function Register() {
 
     try {
       await api.post("/auth/signup", {
+        username: username.trim(),
         studentId: studentId.trim(),
         name: name.trim(),
         department: department.trim(),
         password,
       });
 
+      const successText = '회원가입이 완료되었습니다. 로그인 창으로 넘어갑니다.';
       setSuccessMsg("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
+      alert(successText);
 
       setTimeout(() => {
         navigate("/login");
@@ -135,6 +152,17 @@ function Register() {
               placeholder="홍길동"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="authInputField"
+            />
+          </div>
+
+          <div className="inputGroup">
+            <label className="inputLabel">아이디</label>
+            <input
+              type="text"
+              placeholder="아이디를 입력하세요 (영문+숫자)"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="authInputField"
             />
           </div>

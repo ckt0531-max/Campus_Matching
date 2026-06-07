@@ -29,15 +29,18 @@ function AllPosts() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const postsList = await api.get("/posts");
-        setPosts(postsList);
-
         if (user && user.studentId) {
+          const postsList = await api.get(`/posts?currentUserId=${encodeURIComponent(user.studentId)}`);
+          setPosts(postsList);
+
           const notiRes = await api.get(`/notifications/${user.studentId}`);
           if (notiRes && notiRes.success && Array.isArray(notiRes.data)) {
             const count = notiRes.data.filter((n) => !n.isRead).length;
             setUnreadCount(count);
           }
+        } else {
+          const postsList = await api.get("/posts");
+          setPosts(postsList);
         }
       } catch (err) {
         console.error("전체 게시판 데이터 로딩 에러:", err);
@@ -65,21 +68,14 @@ function AllPosts() {
     if (!user) return "";
     return user.name || user.studentId;
   };
-
-  const appliedPostIds = (() => {
-    const applied = localStorage.getItem("appliedPosts");
-    return applied ? JSON.parse(applied) : [];
-  })();
-
-  // 필터 적용
   const filteredPosts = posts.filter((post) => {
     // 1. 검색어 필터
     const query = searchQuery.toLowerCase().trim();
-    const matchesQuery = !query || (
-      (post.title && post.title.toLowerCase().includes(query)) ||
-      (post.content && post.content.toLowerCase().includes(query)) ||
-      (post.author && post.author.toLowerCase().includes(query))
-    );
+    const matchesQuery =
+      !query ||
+      ((post.title && post.title.toLowerCase().includes(query)) ||
+        (post.content && post.content.toLowerCase().includes(query)) ||
+        (post.author && post.author.toLowerCase().includes(query)));
 
     // 2. 카테고리 필터
     const matchesCategory = selectedCategory === "전체" || post.category === selectedCategory;
@@ -205,7 +201,7 @@ function AllPosts() {
               <tbody>
                 {filteredPosts.map((post, index) => {
                   const isClosed = post.isClosed;
-                  const hasApplied = appliedPostIds.map(String).includes(post.id.toString());
+                  const hasApplied = !!post.isAppliedByCurrentUser;
 
                   return (
                     <tr key={post.id} onClick={() => navigate(`/posts/${post.id}`)}>

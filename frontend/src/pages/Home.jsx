@@ -26,15 +26,18 @@ function Home() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const postsList = await api.get("/posts");
-        setPosts(postsList);
-
         if (user && user.studentId) {
+          const postsList = await api.get(`/posts?currentUserId=${encodeURIComponent(user.studentId)}`);
+          setPosts(postsList);
+
           const notiRes = await api.get(`/notifications/${user.studentId}`);
           if (notiRes && notiRes.success && Array.isArray(notiRes.data)) {
             const count = notiRes.data.filter((n) => !n.isRead).length;
             setUnreadCount(count);
           }
+        } else {
+          const postsList = await api.get("/posts");
+          setPosts(postsList);
         }
       } catch (err) {
         console.error("Home 데이터 로딩 에러:", err);
@@ -72,11 +75,7 @@ function Home() {
     return user.name || user.studentId;
   };
 
-  // 신청한 게시글 ID 목록 로드 (신청 이력은 로컬 저장소 유지)
-  const appliedPostIds = (() => {
-    const applied = localStorage.getItem("appliedPosts");
-    return applied ? JSON.parse(applied) : [];
-  })();
+  // (신청 이력은 서버로 관리되므로 로컬 저장소 기반 표시는 더 이상 사용되지 않음)
 
   return (
     <>
@@ -161,7 +160,7 @@ function Home() {
                     <span className="cardBadge badgeMyPost">내 게시물</span>
                   ) : post.isClosed ? (
                     <span className="cardBadge badgeClosed">신청 마감</span>
-                  ) : appliedPostIds.map(String).includes(post.id.toString()) ? (
+                  ) : post.isAppliedByCurrentUser ? (
                     <span className="cardBadge badgeApplied">신청 완료</span>
                   ) : (
                     <span className="cardBadge badgeAvailable">신청 가능</span>
