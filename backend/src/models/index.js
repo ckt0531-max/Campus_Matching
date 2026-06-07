@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import User from "./user_db.js";
 import Notification from "./notification_db.js";
 import Post from "./post_db.js";
+import Application from "./application_db.js";
 
 dotenv.config();
 
@@ -34,11 +35,13 @@ db.Sequelize = Sequelize;
 db.User = User;
 db.Notification = Notification;
 db.Post = Post;
+db.Application = Application;
 
 // 모델 초기화
 User.initiate(sequelize);
 Notification.initiate(sequelize);
 Post.initiate(sequelize);
+Application.initiate(sequelize);
 
 // 관계 설정
 Object.keys(db).forEach((modelName) => {

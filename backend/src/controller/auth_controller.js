@@ -6,11 +6,11 @@ import { serializeUser, signAccessToken } from "../service/auth_service.js";
 
 export const signup = async (req, res) => {
   try {
-    const { studentId, name, department, password, preferredRole, skills, introduction } = req.body;
+    const { username, studentId, name, department, password, preferredRole, skills, introduction } = req.body;
 
-    if (!studentId || !name || !department || !password) {
+    if (!username || !studentId || !name || !department || !password) {
       return res.status(400).json({
-        message: "학번(studentId), 이름(name), 학과(department), 비밀번호(password)는 필수입니다.",
+        message: "아이디(username), 학번(studentId), 이름(name), 학과(department), 비밀번호(password)는 필수입니다.",
       });
     }
 
@@ -41,16 +41,18 @@ export const signup = async (req, res) => {
       });
     }
 
-    const existingUser = await User.findOne({ where: { studentId: trimmedStudentId } });
+    const existingUser = await User.findOne({ where: { [db.Sequelize.Op.or]: [{ studentId: trimmedStudentId }, { username: username.trim() }] } });
     if (existingUser) {
-      return res.status(409).json({
-        message: "이미 사용 중인 학번입니다.",
-      });
+      if (existingUser.studentId === trimmedStudentId) {
+        return res.status(409).json({ message: "이미 사용 중인 학번입니다." });
+      }
+      return res.status(409).json({ message: "이미 사용 중인 아이디(username)입니다." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
+      username: username.trim(),
       studentId: trimmedStudentId,
       name: name.trim(),
       department: department.trim(),
@@ -77,21 +79,21 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { studentId, password } = req.body;
+    const { studentId, username, password } = req.body;
 
-    if (!studentId || !password) {
+    if ((!studentId && !username) || !password) {
       return res.status(400).json({
-        message: "학번(studentId)과 비밀번호(password)는 필수입니다.",
+        message: "학번(studentId) 또는 아이디(username)와 비밀번호(password)는 필수입니다.",
       });
     }
 
-    const trimmedStudentId = studentId.trim();
+    const whereCond = {};
+    if (username) whereCond.username = username.trim();
+    else whereCond.studentId = studentId.trim();
 
     const user = await User.findOne({
-      where: {
-        studentId: trimmedStudentId,
-      },
-      attributes: ["studentId", "name", "department", "password", "preferredRole", "skills", "introduction"],
+      where: whereCond,
+      attributes: ["studentId", "username", "name", "department", "password", "preferredRole", "skills", "introduction"],
     });
 
     if (!user) {

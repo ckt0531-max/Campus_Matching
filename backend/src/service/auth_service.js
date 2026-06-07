@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export const serializeUser = (user) => ({
+  username: user.username,
   studentId: user.studentId,
   name: user.name,
   department: user.department,

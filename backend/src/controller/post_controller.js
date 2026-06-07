@@ -25,13 +25,13 @@ const isPostOwner = (post, req) => {
   return String(post.userId) === String(req.user.id);
 };
 
-const serializePost = async (postInstance) => {
+const serializePost = async (postInstance, currentUserId = null) => {
   const commentsCount = 0;
 
   const authorName = postInstance.User?.name || "익명";
   const authorStudentId = postInstance.User?.studentId || null;
 
-  return {
+  const base = {
     id: postInstance.id,
     title: postInstance.title,
     content: postInstance.content,
@@ -44,6 +44,16 @@ const serializePost = async (postInstance) => {
     comments: commentsCount,
     isClosed: !!postInstance.isClosed,
   };
+
+  // 현재 사용자가 전달되면, 해당 사용자가 이 게시글에 신청했는지 확인
+  if (currentUserId) {
+    const existing = await db.Application.findOne({ where: { postId: postInstance.id, applicantId: currentUserId } });
+    base.isAppliedByCurrentUser = !!existing;
+  } else {
+    base.isAppliedByCurrentUser = false;
+  }
+
+  return base;
 };
 
 export const createPost = async (req, res, next) => {
@@ -105,8 +115,8 @@ export const getPosts = async (req, res, next) => {
       include: [{ model: User, attributes: ["name", "studentId"] }],
       order: [["createdAt", "DESC"]],
     });
-
-    const result = await Promise.all(posts.map((post) => serializePost(post)));
+    const currentUserId = req.query.currentUserId || null;
+    const result = await Promise.all(posts.map((post) => serializePost(post, currentUserId)));
     return res.status(200).json(result);
   } catch (error) {
     console.error("getPosts error:", error);
@@ -126,7 +136,8 @@ export const getPostDetail = async (req, res, next) => {
       return res.status(404).json({ message: "게시글 없음" });
     }
 
-    return res.status(200).json(await serializePost(post));
+    const currentUserId = req.query.currentUserId || null;
+    return res.status(200).json(await serializePost(post, currentUserId));
   } catch (error) {
     console.error("getPostDetail error:", error);
     next(error);

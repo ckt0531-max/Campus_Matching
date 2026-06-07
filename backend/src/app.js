@@ -58,8 +58,10 @@ app.use((err, req, res, next) => {
 
 async function startServer() {
     try {
-        await sequelize.sync({ alter: true });
-        console.log('데이터베이스 연결 및 테이블 동기화 성공');
+        // 자동 alter 동기화는 복잡한 스키마 변경 시 오류를 일으킬 수 있어 비활성화합니다.
+        // 스키마 변경은 수동 마이그레이션으로 적용하세요.
+        await sequelize.sync();
+        console.log('데이터베이스 연결 및 테이블 동기화 성공 (alter 비활성화)');
 
         app.listen(app.get('port'), () => {
             console.log(app.get('port'), '번 포트에서 매칭 서버 대기 중...');

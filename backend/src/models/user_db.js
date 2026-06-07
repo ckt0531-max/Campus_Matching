@@ -9,6 +9,11 @@ class User extends Sequelize.Model {
                 primaryKey: true,
                 allowNull: false,
             },
+            username: {
+                type: Sequelize.STRING(50),
+                allowNull: false,
+                unique: true,
+            },
             studentId: {
                 type: Sequelize.STRING(20),
                 allowNull: false,
